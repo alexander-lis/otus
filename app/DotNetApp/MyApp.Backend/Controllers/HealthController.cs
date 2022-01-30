@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Backend.Models;
 
 namespace MyApp.Backend.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("")]
 public class HealthController : ControllerBase
 {
     private readonly ILogger<HealthController> _logger;
@@ -14,10 +13,19 @@ public class HealthController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet]
-    public HealthDto Get()
+    [HttpGet("health")]
+    public dynamic GetHealth()
     {
-        return new HealthDto()
+        return new
+        {
+            Status = "OK"
+        };
+    }
+    
+    [HttpGet("ready")]
+    public dynamic GetReady()
+    {
+        return new
         {
             Status = "OK"
         };
