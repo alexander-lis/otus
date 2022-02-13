@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: myapp-backend
-          image: lisitsynalex/myapp_backend:latest
+          image: lisitsynalex/myapp_backend:1.0
+          imagePullPolicy: Always
           livenessProbe:
             httpGet:
               path: /health

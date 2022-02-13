@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: myapp-backend
-          image: lisitsynalex/myapp_backend:latest
+          image: lisitsynalex/myapp_backend:1.0
+          imagePullPolicy: Always
           livenessProbe:
             httpGet:
               path: /health
@@ -28,5 +29,16 @@ spec:
               path: /ready
               port: 80
             successThreshold: 3
+          env:
+            - name: "ConnectionString"
+              valueFrom:
+                secretKeyRef:
+                  name: myapp-secrets
+                  key: ConnectionString
+            - name: "DbName"
+              valueFrom:
+                configMapKeyRef:
+                  name: myapp-config
+                  key: dbname
           ports:
             - containerPort: 80
