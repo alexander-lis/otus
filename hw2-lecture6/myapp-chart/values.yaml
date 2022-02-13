@@ -1,0 +1,12 @@
+config:
+  dbname: "otusdb"
+
+backend:
+  image: "lisitsynalex/myapp_backend:1.0"
+  replicaCount: 2
+
+migrator:
+  image: "lisitsynalex/myapp_migrator:1.2"
+
+mysql:
+  image: "mysql:5.6"
