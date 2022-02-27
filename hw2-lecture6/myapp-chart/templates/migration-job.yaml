@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: {{ .Release.Name }}-migration
-        image: 
+        image: {{ .Values.migrator.image }}
         imagePullPolicy: Always
         env:
           - name: "ConnectionString"
@@ -21,4 +21,4 @@ spec:
                 name: {{ .Release.Name }}-config
                 key: dbname
       restartPolicy: Never
-  backoffLimit: 4
+  backoffLimit: 10
