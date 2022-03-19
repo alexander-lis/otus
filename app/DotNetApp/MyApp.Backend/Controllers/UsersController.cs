@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Backend.Helpers;
 using MyApp.Backend.Models;
 using MySqlConnector;
 using Prometheus;
@@ -10,7 +11,17 @@ namespace MyApp.Backend.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private MySqlConnection _connection;
+    private readonly MySqlConnection _connection;
+
+    // Скрипты.
+    private readonly Func<CreateUserDto, string> _insertUserSql = user => $"INSERT INTO users (name) VALUES ('{user.Name}')";
+    private readonly Func<int, string> _selectUserSql = id => $"SELECT * FROM users WHERE id = {id}";
+    private readonly string _selectUsersSql = "SELECT * FROM users";
+
+    private readonly Func<UpdateUserDto, int, string> _updateUserSql =
+        (user, id) => $"UPDATE users SET name = '{user.Name}' WHERE id = {id}";
+
+    private readonly Func<int, string> _deleteUserSql = id => $"DELETE FROM users WHERE id = {id}";
 
     private readonly Summary _summary = Metrics.CreateSummary(
         "elapsed_time_ms_summary",
@@ -39,15 +50,10 @@ public class UsersController : ControllerBase
     {
         var stopwatch = Stopwatch.StartNew();
 
-        _connection.Open();
-        var cmd = ExecuteNonQuery(_connection, $"INSERT INTO users (name) VALUES ('{user.Name}')");
-        _connection.Close();
-
-        var id = cmd.LastInsertedId;
+        var id = DatabaseHelpers.ExecuteNonQuery(cmd => cmd.LastInsertedId, _connection, _insertUserSql(user));
 
         CollectElapsedTime("CreateUser", stopwatch);
 
-        
         return Ok(new UserDto()
         {
             Id = (int)id,
@@ -59,18 +65,13 @@ public class UsersController : ControllerBase
     public ActionResult<UserDto> UpdateUser(int id, [FromBody] UpdateUserDto user)
     {
         // Проверка.
-        _connection.Open();
-        if (!IsAny(ExecuteReader(_connection, $"SELECT * FROM users WHERE id = {id}")))
+        if (!DatabaseHelpers.ExecuteReader(DatabaseHelpers.IsAny, _connection, _selectUserSql(id)))
         {
             return NotFound();
         }
 
-        _connection.Close();
-
         // Обновление.
-        _connection.Open();
-        ExecuteNonQuery(_connection, $"UPDATE users SET name = '{user.Name}' WHERE id = {id}");
-        _connection.Close();
+        DatabaseHelpers.ExecuteNonQuery(_connection, _updateUserSql(user, id));
 
         return Ok(new UserDto()
         {
@@ -84,20 +85,20 @@ public class UsersController : ControllerBase
     {
         var stopwatch = Stopwatch.StartNew();
 
-        _connection.Open();
-        using var rdr = ExecuteReader(_connection, $"SELECT * FROM users WHERE id = {id}");
-
-        UserDto? user = null;
-        while (rdr.Read())
+        var user = DatabaseHelpers.ExecuteReader(rdr =>
         {
-            user = new UserDto()
+            UserDto? user = null;
+            while (rdr.Read())
             {
-                Id = rdr.GetInt32(0),
-                Name = rdr.GetString(1)
-            };
-        }
+                user = new UserDto()
+                {
+                    Id = rdr.GetInt32(0),
+                    Name = rdr.GetString(1)
+                };
+            }
 
-        _connection.Close();
+            return user;
+        }, _connection, _selectUserSql(id));
 
         if (user is null)
         {
@@ -114,25 +115,26 @@ public class UsersController : ControllerBase
     {
         var stopwatch = Stopwatch.StartNew();
 
-        _connection.Open();
-        using var rdr = ExecuteReader(_connection, $"SELECT * FROM users");
-
-        var users = new List<UserDto>();
-
-        while (rdr.Read())
+        var users = DatabaseHelpers.ExecuteReader(rdr =>
         {
-            var user = new UserDto()
-            {
-                Id = rdr.GetInt32(0),
-                Name = rdr.GetString(1)
-            };
-            users.Add(user);
-        }
+            var users = new List<UserDto>();
 
-        _connection.Close();
+            while (rdr.Read())
+            {
+                var user = new UserDto()
+                {
+                    Id = rdr.GetInt32(0),
+                    Name = rdr.GetString(1)
+                };
+                users.Add(user);
+            }
+
+            return users;
+        }, _connection, _selectUsersSql);
+
 
         CollectElapsedTime("ReadUsers", stopwatch);
-        
+
         return users;
     }
 
@@ -140,47 +142,17 @@ public class UsersController : ControllerBase
     public ActionResult DeleteUser(int id)
     {
         // Проверка.
-        _connection.Open();
-        if (!IsAny(ExecuteReader(_connection, $"SELECT * FROM users WHERE id = {id}")))
+        if (!DatabaseHelpers.ExecuteReader(DatabaseHelpers.IsAny, _connection, _selectUserSql(id)))
         {
             return NotFound();
         }
 
-        _connection.Close();
-
         // Удаление.
-        _connection.Open();
-        ExecuteNonQuery(_connection, $"DELETE FROM users WHERE id = {id}");
-        _connection.Close();
+        DatabaseHelpers.ExecuteNonQuery(_connection, _deleteUserSql(id));
+
         return Ok();
     }
 
-    private MySqlCommand ExecuteNonQuery(MySqlConnection connection, string script)
-    {
-        var cmd = _connection.CreateCommand();
-        cmd.CommandText = script;
-        cmd.ExecuteNonQuery();
-        return cmd;
-    }
-
-    private MySqlDataReader ExecuteReader(MySqlConnection connection, string script)
-    {
-        var cmd = _connection.CreateCommand();
-        cmd.CommandText = script;
-        var reader = cmd.ExecuteReader();
-        return reader;
-    }
-
-    private bool IsAny(MySqlDataReader rdr)
-    {
-        while (rdr.Read())
-        {
-            return true;
-        }
-
-        return false;
-    }
-    
     private void CollectElapsedTime(
         string methodName,
         Stopwatch stopwatch)
