@@ -11,10 +11,14 @@ namespace MyApp.Backend.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
+    // Поля.
     private readonly MySqlConnection _connection;
+    private readonly Random _random;
 
     // Скрипты.
-    private readonly Func<CreateUserDto, string> _insertUserSql = user => $"INSERT INTO users (name) VALUES ('{user.Name}')";
+    private readonly Func<CreateUserDto, string> _insertUserSql =
+        user => $"INSERT INTO users (name) VALUES ('{user.Name}')";
+
     private readonly Func<int, string> _selectUserSql = id => $"SELECT * FROM users WHERE id = {id}";
     private readonly string _selectUsersSql = "SELECT * FROM users";
 
@@ -23,14 +27,12 @@ public class UsersController : ControllerBase
 
     private readonly Func<int, string> _deleteUserSql = id => $"DELETE FROM users WHERE id = {id}";
 
-    private readonly Summary _summary = Metrics.CreateSummary(
+    // Метрики.
+    private readonly Summary _latencySummary = Metrics.CreateSummary(
         "elapsed_time_ms_summary",
         "Records latency of methods.",
         new SummaryConfiguration()
         {
-            AgeBuckets = 5,
-            BufferSize = 500,
-            MaxAge = new TimeSpan(0, 0, 2, 0),
             LabelNames = new[] { "class_name", "method_name" },
             Objectives = new List<QuantileEpsilonPair>
             {
@@ -39,16 +41,30 @@ public class UsersController : ControllerBase
                 new QuantileEpsilonPair(0.99, 0.001),
             }
         });
+    
+    private readonly Summary _rpsSummary = Metrics.CreateSummary(
+        "rps_summary",
+        "Records RPS.",
+        new SummaryConfiguration()
+        {
+            MaxAge = new TimeSpan(0, 0, 0, 1),
+            LabelNames = new[] { "class_name", "method_name" },
+        });
+
+    private readonly Counter _errorCounter = Metrics.CreateCounter("internal_server_error_counter", "Counts 500 responses.");
 
     public UsersController(MySqlConnection connection)
     {
         _connection = connection;
+        _random = new Random();
     }
 
     [HttpPost]
     public ActionResult<UserDto> CreateUser(CreateUserDto user)
     {
+        CollectRps("CreateUser");
         var stopwatch = Stopwatch.StartNew();
+        Sleep();
 
         var id = DatabaseHelpers.ExecuteNonQuery(cmd => cmd.LastInsertedId, _connection, _insertUserSql(user));
 
@@ -64,6 +80,10 @@ public class UsersController : ControllerBase
     [HttpPut("{id:int}")]
     public ActionResult<UserDto> UpdateUser(int id, [FromBody] UpdateUserDto user)
     {
+        CollectRps("UpdateUser");
+        var stopwatch = Stopwatch.StartNew();
+        Sleep();
+
         // Проверка.
         if (!DatabaseHelpers.ExecuteReader(DatabaseHelpers.IsAny, _connection, _selectUserSql(id)))
         {
@@ -72,6 +92,8 @@ public class UsersController : ControllerBase
 
         // Обновление.
         DatabaseHelpers.ExecuteNonQuery(_connection, _updateUserSql(user, id));
+
+        CollectElapsedTime("UpdateUser", stopwatch);
 
         return Ok(new UserDto()
         {
@@ -83,7 +105,9 @@ public class UsersController : ControllerBase
     [HttpGet("{id:int}")]
     public ActionResult<UserDto> ReadUser(int id)
     {
+        CollectRps("ReadUser");
         var stopwatch = Stopwatch.StartNew();
+        Sleep();
 
         var user = DatabaseHelpers.ExecuteReader(rdr =>
         {
@@ -113,8 +137,10 @@ public class UsersController : ControllerBase
     [HttpGet]
     public ActionResult<ICollection<UserDto>> ReadUsers()
     {
+        CollectRps("ReadUsers");
         var stopwatch = Stopwatch.StartNew();
-
+        Sleep();
+        
         var users = DatabaseHelpers.ExecuteReader(rdr =>
         {
             var users = new List<UserDto>();
@@ -141,6 +167,10 @@ public class UsersController : ControllerBase
     [HttpDelete("{id:int}")]
     public ActionResult DeleteUser(int id)
     {
+        CollectRps("DeleteUser");
+        var stopwatch = Stopwatch.StartNew();
+        Sleep();
+
         // Проверка.
         if (!DatabaseHelpers.ExecuteReader(DatabaseHelpers.IsAny, _connection, _selectUserSql(id)))
         {
@@ -150,6 +180,8 @@ public class UsersController : ControllerBase
         // Удаление.
         DatabaseHelpers.ExecuteNonQuery(_connection, _deleteUserSql(id));
 
+        CollectElapsedTime("DeleteUser", stopwatch);
+        
         return Ok();
     }
 
@@ -158,6 +190,22 @@ public class UsersController : ControllerBase
         Stopwatch stopwatch)
     {
         stopwatch.Stop();
-        _summary.Labels("UsersController", methodName).Observe(stopwatch.ElapsedMilliseconds);
+        _latencySummary.Labels("UsersController", methodName).Observe(stopwatch.ElapsedMilliseconds);
+    }
+
+    private void CollectRps(string methodName)
+    {
+        _rpsSummary.Labels("UsersController", methodName).Observe(1);
+    }
+
+    private void Sleep()
+    {
+        if (_random.NextDouble() >= 0.7)
+        {
+            _errorCounter.Inc();
+            throw new ApplicationException("Internal Server Error");
+        }
+        
+        Thread.Sleep(_random.Next(250));
     }
 }
