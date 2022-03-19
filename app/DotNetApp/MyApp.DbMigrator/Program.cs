@@ -3,6 +3,7 @@ using MySqlConnector;
 
 // Конфиг.
 var config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.Development.json")
     .AddEnvironmentVariables()
     .Build();
 
@@ -27,9 +28,15 @@ connDb.Close();
 using var connTable = new MySqlConnection($"{connectionString};database={dbName}");
 connTable.Open();
 
+Console.WriteLine("DELETING TABLES - START");
+using var deleteTableCommand = connTable.CreateCommand();
+deleteTableCommand.CommandText = @"drop table if exists users";
+deleteTableCommand.ExecuteNonQuery();
+Console.WriteLine("DELETING TABLES - FINISH");
+
 Console.WriteLine("CREATING TABLES - START");
 using var createTableCommand = connTable.CreateCommand();
-createTableCommand.CommandText = @"create table users
+createTableCommand.CommandText = @"create table if not exists users
     (id INT NOT NULL AUTO_INCREMENT,    
     name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)    );";

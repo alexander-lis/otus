@@ -87,6 +87,7 @@ public class UsersController : ControllerBase
         // Проверка.
         if (!DatabaseHelpers.ExecuteReader(DatabaseHelpers.IsAny, _connection, _selectUserSql(id)))
         {
+            CollectElapsedTime("DeleteUser", stopwatch);
             return NotFound();
         }
 
@@ -126,6 +127,7 @@ public class UsersController : ControllerBase
 
         if (user is null)
         {
+            CollectElapsedTime("DeleteUser", stopwatch);
             return NotFound();
         }
 
@@ -174,6 +176,7 @@ public class UsersController : ControllerBase
         // Проверка.
         if (!DatabaseHelpers.ExecuteReader(DatabaseHelpers.IsAny, _connection, _selectUserSql(id)))
         {
+            CollectElapsedTime("DeleteUser", stopwatch);
             return NotFound();
         }
 
