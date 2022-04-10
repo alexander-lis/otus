@@ -2,7 +2,7 @@ config:
   dbname: "otusdb"
 
 backend:
-  image: "lisitsynalex/myapp_backend:hw3-lecture9"
+  image: "lisitsynalex/myapp_backend:hw3-lecture9-focal"
   replicaCount: 2
 
 migrator:
