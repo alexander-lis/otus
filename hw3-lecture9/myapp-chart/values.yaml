@@ -9,4 +9,4 @@ migrator:
   image: "lisitsynalex/myapp_migrator:hw3-lecture9"
 
 mysql:
-  image: "mysql:5.6"
+  image: "mariadb:10.7.3"
