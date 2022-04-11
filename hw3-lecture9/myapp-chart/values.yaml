@@ -2,11 +2,11 @@ config:
   dbname: "otusdb"
 
 backend:
-  image: "lisitsynalex/myapp_backend:hw3-lecture9-focal"
+  image: "lisitsynalex/myapp_backend:hw3-lecture9-arm"
   replicaCount: 2
 
 migrator:
-  image: "lisitsynalex/myapp_migrator:hw3-lecture9"
+  image: "lisitsynalex/myapp_migrator:hw3-lecture9-arm"
 
 mysql:
   image: "mariadb:10.7.3"

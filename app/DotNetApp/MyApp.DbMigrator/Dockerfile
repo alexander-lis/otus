@@ -1,7 +1,7 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:6.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/runtime:6.0-alpine3.15 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine3.15 AS build
 WORKDIR /src
 COPY ["MyApp.DbMigrator/MyApp.DbMigrator.csproj", "MyApp.DbMigrator/"]
 RUN dotnet restore "MyApp.DbMigrator/MyApp.DbMigrator.csproj"
