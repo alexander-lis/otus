@@ -139,6 +139,7 @@ public class UsersController : ControllerBase
     [HttpGet]
     public ActionResult<ICollection<UserDto>> ReadUsers()
     {
+        Console.WriteLine("ReadUsers version 2");
         CollectRps("ReadUsers");
         var stopwatch = Stopwatch.StartNew();
         Sleep();
