@@ -4,6 +4,7 @@ config:
 backend:
   image: "lisitsynalex/myapp_backend:hw4-lecture10-v1"
   replicaCount: 1
+  version: v1
 
 migrator:
   image: "lisitsynalex/myapp_migrator:hw3-lecture9"
