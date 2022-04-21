@@ -20,7 +20,7 @@ spec:
       serviceAccountName: sa-myappbackend
       containers:
         - name: myappbackend
-          image: {{ .Values.backend.image }}
+          image: {{ .Values.backend.imagesecond }}
           imagePullPolicy: Always
           livenessProbe:
             httpGet:
