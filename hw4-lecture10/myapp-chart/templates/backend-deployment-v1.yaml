@@ -1,22 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-backend-deployment
+  name: myappbackend-v1
   labels:
-    app: {{ .Release.Name }}-backend
+    app: myappbackend
+    version: v1
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-backend
+      app: myappbackend
+      version: v1
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-backend
+        app: myappbackend
+        version: v1
     spec:
+      serviceAccountName: sa-myappbackend
       containers:
-        - name: {{ .Release.Name }}-backend
-          image: {{ .Values.backend.image }}
+        - name: myappbackend
+          image: {{ .Values.backend.imagefirst }}
           imagePullPolicy: Always
           livenessProbe:
             httpGet:

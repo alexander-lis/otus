@@ -2,7 +2,8 @@ config:
   dbname: "otusdb"
 
 backend:
-  image: "lisitsynalex/myapp_backend:hw4-lecture10-v1-arm"
+  imagefirst: "lisitsynalex/myapp_backend:hw4-lecture10-v1-arm"
+  imagesecond: "lisitsynalex/myapp_backend:hw4-lecture10-v2-arm"
   replicaCount: 1
 
 migrator:
