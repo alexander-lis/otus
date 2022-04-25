@@ -1,10 +1,9 @@
-using System.Diagnostics;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Backend.Infrastructure;
 using MyApp.Backend.Models;
+using MyApp.Common.Infrastructure;
 using MySqlConnector;
-using Prometheus;
 
 namespace MyApp.Backend.Controllers;
 
@@ -12,20 +11,21 @@ namespace MyApp.Backend.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
+    // TODO: удалить пользователей отсюда.
     // Поля.
     private readonly MySqlConnection _connection;
 
     // Скрипты.
     private readonly Func<CreateUserDto, string> _insertUserSql =
-        user => $"INSERT INTO users (name) VALUES ('{user.Name}')";
+        user => $"INSERT INTO back_users (login) VALUES ('{user.Login}')";
 
-    private readonly Func<int, string> _selectUserSql = id => $"SELECT * FROM users WHERE id = {id}";
-    private readonly string _selectUsersSql = "SELECT * FROM users";
+    private readonly Func<int, string> _selectUserSql = id => $"SELECT * FROM back_users WHERE id = {id}";
+    private readonly string _selectUsersSql = "SELECT * FROM back_users";
 
     private readonly Func<UpdateUserDto, int, string> _updateUserSql =
-        (user, id) => $"UPDATE users SET name = '{user.Name}' WHERE id = {id}";
+        (user, id) => $"UPDATE back_users SET login = '{user.Login}' WHERE id = {id}";
 
-    private readonly Func<int, string> _deleteUserSql = id => $"DELETE FROM users WHERE id = {id}";
+    private readonly Func<int, string> _deleteUserSql = id => $"DELETE FROM back_users WHERE id = {id}";
 
     // Метрики.
     private readonly MetricsCollector _metricsCollector;
@@ -34,10 +34,11 @@ public class UsersController : ControllerBase
     public UsersController(MySqlConnection connection)
     {
         _connection = connection;
-        _metricsCollector = new MetricsCollector("UsersController");
+        _metricsCollector = new MetricsCollector("MyApp.Backend", "UsersController");
     }
 
     [HttpPost]
+    [Obsolete("Здесь не должно быть создания")]
     public async Task<ActionResult> CreateUser(CreateUserDto user, CancellationToken cancellationToken)
     {
         return await _metricsCollector.ExecuteWithMetrics("CreateUser", async () =>
@@ -55,6 +56,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Obsolete("Здесь не должно быть обновления")]
     public async Task<ActionResult> UpdateUser(int id, [FromBody] UpdateUserDto user,
         CancellationToken cancellationToken)
     {
@@ -88,6 +90,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<ICollection<UserDto>>> ReadUsers(CancellationToken cancellationToken)
     {
         return await _metricsCollector.ExecuteWithMetrics("ReadUsers", async () =>
@@ -98,6 +101,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Obsolete("Здесь не должно быть удаления")]
     public async Task<ActionResult> DeleteUser(int id, CancellationToken cancellationToken)
     {
         return await _metricsCollector.ExecuteWithMetrics("DeleteUser", async () =>

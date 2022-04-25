@@ -2,5 +2,5 @@
 
 public class UpdateUserDto
 {
-    public string Name { get; set; }
+    public string Login { get; set; } = null!;
 }

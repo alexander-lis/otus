@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Backend", "MyApp.Back
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.DbMigrator", "MyApp.DbMigrator\MyApp.DbMigrator.csproj", "{7130171A-4F11-42F0-9CFB-47852ED75991}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Auth", "MyApp.Auth\MyApp.Auth.csproj", "{D80BC9DC-C217-4104-8C21-BCB97262641D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Common", "MyApp.Common\MyApp.Common.csproj", "{81533C2D-6E90-4CD3-8DE9-F21868C9DAB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{7130171A-4F11-42F0-9CFB-47852ED75991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7130171A-4F11-42F0-9CFB-47852ED75991}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7130171A-4F11-42F0-9CFB-47852ED75991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D80BC9DC-C217-4104-8C21-BCB97262641D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D80BC9DC-C217-4104-8C21-BCB97262641D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D80BC9DC-C217-4104-8C21-BCB97262641D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D80BC9DC-C217-4104-8C21-BCB97262641D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81533C2D-6E90-4CD3-8DE9-F21868C9DAB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81533C2D-6E90-4CD3-8DE9-F21868C9DAB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81533C2D-6E90-4CD3-8DE9-F21868C9DAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81533C2D-6E90-4CD3-8DE9-F21868C9DAB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

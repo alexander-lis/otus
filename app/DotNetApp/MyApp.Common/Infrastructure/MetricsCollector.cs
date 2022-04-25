@@ -2,16 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Prometheus;
 
-namespace MyApp.Backend.Infrastructure;
+namespace MyApp.Common.Infrastructure;
 
 public class MetricsCollector
 {
+    private readonly string _appName;
     private readonly string _controllerName;
     private readonly Summary _rpsSummary;
     private readonly Summary _latencySummary;
     
-    public MetricsCollector(string controllerName)
+    public MetricsCollector(string appName, string controllerName)
     {
+        _appName = appName;
         _controllerName = controllerName;
 
         _rpsSummary = Metrics.CreateSummary(
@@ -20,7 +22,7 @@ public class MetricsCollector
             new SummaryConfiguration()
             {
                 MaxAge = new TimeSpan(0, 0, 0, 1),
-                LabelNames = new[] { "class_name", "method_name" },
+                LabelNames = new[] { "app_name", "class_name", "method_name" },
             });
 
         _latencySummary = Metrics.CreateSummary(
@@ -28,7 +30,7 @@ public class MetricsCollector
             "Records latency of methods.",
             new SummaryConfiguration()
             {
-                LabelNames = new[] { "class_name", "method_name" },
+                LabelNames = new[] { "app_name", "class_name", "method_name" },
                 Objectives = new List<QuantileEpsilonPair>
                 {
                     new QuantileEpsilonPair(0.5, 0.05),
@@ -52,11 +54,11 @@ public class MetricsCollector
     private void CollectElapsedTime(string methodName, Stopwatch stopwatch)
     {
         stopwatch.Stop();
-        _latencySummary.Labels(_controllerName, methodName).Observe(stopwatch.ElapsedMilliseconds);
+        _latencySummary.Labels(_appName, _controllerName, methodName).Observe(stopwatch.ElapsedMilliseconds);
     }
 
     private void CollectRps(string methodName)
     {
-        _rpsSummary.Labels(_controllerName, methodName).Observe(1);
+        _rpsSummary.Labels(_appName, _controllerName, methodName).Observe(1);
     }
 }

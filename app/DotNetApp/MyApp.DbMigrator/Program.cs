@@ -29,18 +29,34 @@ using var connTable = new MySqlConnection($"{connectionString};database={dbName}
 connTable.Open();
 
 Console.WriteLine("DELETING TABLES - START");
-using var deleteTableCommand = connTable.CreateCommand();
-deleteTableCommand.CommandText = @"drop table if exists users";
-deleteTableCommand.ExecuteNonQuery();
+// Таблицы Auth.
+using var deleteTableCommand1 = connTable.CreateCommand();
+deleteTableCommand1.CommandText = @"drop table if exists auth_users";
+deleteTableCommand1.ExecuteNonQuery();
+
+// Таблицы Backend.
+using var deleteTableCommand2 = connTable.CreateCommand();
+deleteTableCommand2.CommandText = @"drop table if exists back_users";
+deleteTableCommand2.ExecuteNonQuery();
 Console.WriteLine("DELETING TABLES - FINISH");
 
 Console.WriteLine("CREATING TABLES - START");
-using var createTableCommand = connTable.CreateCommand();
-createTableCommand.CommandText = @"create table if not exists users
+// Таблицы Auth.
+using var createTableCommand1 = connTable.CreateCommand();
+createTableCommand1.CommandText = @"create table if not exists auth_users
     (id INT NOT NULL AUTO_INCREMENT,    
-    name VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id)    );";
-createTableCommand.ExecuteNonQuery();
+    login VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id));";
+createTableCommand1.ExecuteNonQuery();
+
+// Таблицы Backend.
+using var createTableCommand2 = connTable.CreateCommand();
+createTableCommand2.CommandText = @"create table if not exists back_users
+    (id INT NOT NULL AUTO_INCREMENT,    
+    login VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id));";
+createTableCommand2.ExecuteNonQuery();
 Console.WriteLine("CREATING TABLES - FINISH");
 
 connTable.Close();
