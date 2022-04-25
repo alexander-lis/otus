@@ -1,6 +1,7 @@
 using System.Diagnostics;
+using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Backend.Helpers;
+using MyApp.Backend.Infrastructure;
 using MyApp.Backend.Models;
 using MySqlConnector;
 using Prometheus;
@@ -13,7 +14,6 @@ public class UsersController : ControllerBase
 {
     // Поля.
     private readonly MySqlConnection _connection;
-    private readonly Random _random;
 
     // Скрипты.
     private readonly Func<CreateUserDto, string> _insertUserSql =
@@ -28,188 +28,88 @@ public class UsersController : ControllerBase
     private readonly Func<int, string> _deleteUserSql = id => $"DELETE FROM users WHERE id = {id}";
 
     // Метрики.
-    private readonly Summary _latencySummary = Metrics.CreateSummary(
-        "elapsed_time_ms_summary",
-        "Records latency of methods.",
-        new SummaryConfiguration()
-        {
-            LabelNames = new[] { "class_name", "method_name" },
-            Objectives = new List<QuantileEpsilonPair>
-            {
-                new QuantileEpsilonPair(0.5, 0.05),
-                new QuantileEpsilonPair(0.95, 0.005),
-                new QuantileEpsilonPair(0.99, 0.001),
-            }
-        });
-    
-    private readonly Summary _rpsSummary = Metrics.CreateSummary(
-        "rps_summary",
-        "Records RPS.",
-        new SummaryConfiguration()
-        {
-            MaxAge = new TimeSpan(0, 0, 0, 1),
-            LabelNames = new[] { "class_name", "method_name" },
-        });
+    private readonly MetricsCollector _metricsCollector;
 
-    private readonly Counter _errorCounter = Metrics.CreateCounter("internal_server_error_counter", "Counts 500 responses.");
 
     public UsersController(MySqlConnection connection)
     {
         _connection = connection;
-        _random = new Random();
+        _metricsCollector = new MetricsCollector("UsersController");
     }
 
     [HttpPost]
-    public ActionResult<UserDto> CreateUser(CreateUserDto user)
+    public async Task<ActionResult> CreateUser(CreateUserDto user, CancellationToken cancellationToken)
     {
-        CollectRps("CreateUser");
-        var stopwatch = Stopwatch.StartNew();
-        Sleep();
-
-        var id = DatabaseHelpers.ExecuteNonQuery(cmd => cmd.LastInsertedId, _connection, _insertUserSql(user));
-
-        CollectElapsedTime("CreateUser", stopwatch);
-
-        return Ok(new UserDto()
+        return await _metricsCollector.ExecuteWithMetrics("CreateUser", async () =>
         {
-            Id = (int)id,
-            Name = user.Name
+            var rows = await _connection.ExecuteAsync(_insertUserSql(user), cancellationToken);
+
+            if (rows == 0)
+            {
+                return Problem();
+            }
+
+            return Ok();
         });
+
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult<UserDto> UpdateUser(int id, [FromBody] UpdateUserDto user)
+    public async Task<ActionResult> UpdateUser(int id, [FromBody] UpdateUserDto user,
+        CancellationToken cancellationToken)
     {
-        CollectRps("UpdateUser");
-        var stopwatch = Stopwatch.StartNew();
-        Sleep();
-
-        // Проверка.
-        if (!DatabaseHelpers.ExecuteReader(DatabaseHelpers.IsAny, _connection, _selectUserSql(id)))
+        return await _metricsCollector.ExecuteWithMetrics("UpdateUser", async () =>
         {
-            CollectElapsedTime("DeleteUser", stopwatch);
-            return NotFound();
-        }
+            var rows = await _connection.ExecuteAsync(_updateUserSql(user, id), cancellationToken);
 
-        // Обновление.
-        DatabaseHelpers.ExecuteNonQuery(_connection, _updateUserSql(user, id));
+            if (rows == 0)
+            {
+                return NotFound();
+            }
 
-        CollectElapsedTime("UpdateUser", stopwatch);
-
-        return Ok(new UserDto()
-        {
-            Id = id,
-            Name = user.Name
+            return Ok();
         });
     }
 
     [HttpGet("{id:int}")]
-    public ActionResult<UserDto> ReadUser(int id)
+    public async Task<ActionResult<UserDto>> ReadUser(int id, CancellationToken cancellationToken)
     {
-        CollectRps("ReadUser");
-        var stopwatch = Stopwatch.StartNew();
-        Sleep();
-
-        var user = DatabaseHelpers.ExecuteReader(rdr =>
+        return await _metricsCollector.ExecuteWithMetrics("ReadUser", async () =>
         {
-            UserDto? user = null;
-            while (rdr.Read())
+            var user = await _connection.QuerySingleOrDefaultAsync<UserDto>(_selectUserSql(id), cancellationToken);
+
+            if (user is null)
             {
-                user = new UserDto()
-                {
-                    Id = rdr.GetInt32(0),
-                    Name = rdr.GetString(1)
-                };
+                return NotFound();
             }
 
-            return user;
-        }, _connection, _selectUserSql(id));
-
-        if (user is null)
-        {
-            CollectElapsedTime("DeleteUser", stopwatch);
-            return NotFound();
-        }
-
-        CollectElapsedTime("ReadUser", stopwatch);
-
-        return Ok(user);
+            return Ok(user);
+        });
     }
 
     [HttpGet]
-    public ActionResult<ICollection<UserDto>> ReadUsers()
+    public async Task<ActionResult<ICollection<UserDto>>> ReadUsers(CancellationToken cancellationToken)
     {
-        Console.WriteLine("ReadUsers version 2");
-        CollectRps("ReadUsers");
-        var stopwatch = Stopwatch.StartNew();
-        Sleep();
-        
-        var users = DatabaseHelpers.ExecuteReader(rdr =>
+        return await _metricsCollector.ExecuteWithMetrics("ReadUsers", async () =>
         {
-            var users = new List<UserDto>();
-
-            while (rdr.Read())
-            {
-                var user = new UserDto()
-                {
-                    Id = rdr.GetInt32(0),
-                    Name = rdr.GetString(1)
-                };
-                users.Add(user);
-            }
-
-            return users;
-        }, _connection, _selectUsersSql);
-
-
-        CollectElapsedTime("ReadUsers", stopwatch);
-
-        return users;
+            var users = await _connection.QueryAsync<UserDto>(_selectUsersSql, cancellationToken);
+            return Ok(users);
+        });
     }
 
     [HttpDelete("{id:int}")]
-    public ActionResult DeleteUser(int id)
+    public async Task<ActionResult> DeleteUser(int id, CancellationToken cancellationToken)
     {
-        CollectRps("DeleteUser");
-        var stopwatch = Stopwatch.StartNew();
-        Sleep();
-
-        // Проверка.
-        if (!DatabaseHelpers.ExecuteReader(DatabaseHelpers.IsAny, _connection, _selectUserSql(id)))
+        return await _metricsCollector.ExecuteWithMetrics("DeleteUser", async () =>
         {
-            CollectElapsedTime("DeleteUser", stopwatch);
-            return NotFound();
-        }
+            var rows = await _connection.ExecuteAsync(_deleteUserSql(id), cancellationToken);
 
-        // Удаление.
-        DatabaseHelpers.ExecuteNonQuery(_connection, _deleteUserSql(id));
+            if (rows == 0)
+            {
+                return NotFound();
+            }
 
-        CollectElapsedTime("DeleteUser", stopwatch);
-        
-        return Ok();
-    }
-
-    private void CollectElapsedTime(
-        string methodName,
-        Stopwatch stopwatch)
-    {
-        stopwatch.Stop();
-        _latencySummary.Labels("UsersController", methodName).Observe(stopwatch.ElapsedMilliseconds);
-    }
-
-    private void CollectRps(string methodName)
-    {
-        _rpsSummary.Labels("UsersController", methodName).Observe(1);
-    }
-
-    private void Sleep()
-    {
-        if (_random.NextDouble() >= 0.7)
-        {
-            _errorCounter.Inc();
-            throw new ApplicationException("Internal Server Error");
-        }
-        
-        Thread.Sleep(_random.Next(250));
+            return Ok();
+        });
     }
 }
