@@ -38,6 +38,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     [Obsolete("Здесь не должно быть создания")]
     public async Task<ActionResult> CreateUser(CreateUserDto user, CancellationToken cancellationToken)
     {
@@ -56,6 +57,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize]
     [Obsolete("Здесь не должно быть обновления")]
     public async Task<ActionResult> UpdateUser(int id, [FromBody] UpdateUserDto user,
         CancellationToken cancellationToken)
@@ -74,6 +76,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Authorize]
     public async Task<ActionResult<UserDto>> ReadUser(int id, CancellationToken cancellationToken)
     {
         return await _metricsCollector.ExecuteWithMetrics("ReadUser", async () =>
@@ -101,6 +104,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize]
     [Obsolete("Здесь не должно быть удаления")]
     public async Task<ActionResult> DeleteUser(int id, CancellationToken cancellationToken)
     {
