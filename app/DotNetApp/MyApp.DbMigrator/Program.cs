@@ -47,6 +47,7 @@ createTableCommand1.CommandText = @"create table if not exists auth_users
     (id INT NOT NULL AUTO_INCREMENT,    
     login VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id));";
 createTableCommand1.ExecuteNonQuery();
 
@@ -55,6 +56,7 @@ using var createTableCommand2 = connTable.CreateCommand();
 createTableCommand2.CommandText = @"create table if not exists back_users
     (id INT NOT NULL AUTO_INCREMENT,    
     login VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id));";
 createTableCommand2.ExecuteNonQuery();
 Console.WriteLine("CREATING TABLES - FINISH");

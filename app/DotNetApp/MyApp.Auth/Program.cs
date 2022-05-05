@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MyApp.Common.Authentication;
 using MySqlConnector;
 using Prometheus;
 
@@ -8,6 +10,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Authentication.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = AuthOptions.TokenValidationParameters;
+    });
 
 var connectionString = $"{builder.Configuration["ConnectionString"]};database={builder.Configuration["DbName"]}";
 builder.Services.AddTransient(_ => new MySqlConnection(connectionString));
@@ -22,6 +32,10 @@ app.UseSwaggerUI();
 app.UseMetricServer();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

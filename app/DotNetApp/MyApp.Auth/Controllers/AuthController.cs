@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Auth.Models;
@@ -10,8 +11,9 @@ using MySqlConnector;
 
 namespace MyApp.Auth.Controllers;
 
-[Route("[controller]")]
+[Route("")]
 [ApiController]
+[AllowAnonymous]
 public class AuthController : ControllerBase
 {
     // Поля.
@@ -21,7 +23,7 @@ public class AuthController : ControllerBase
     // Скрипты.
     private readonly Func<RegisterUserDto, string> _insertUserSql =
         user =>
-            $"INSERT INTO auth_users (login, password) VALUES ('{user.Login}', '{user.Password}')";
+            $"INSERT INTO auth_users (login, password, name) VALUES ('{user.Login}', '{user.Password}', '{user.Name}')";
 
     private readonly Func<string, string, string> _selectUserSql =
         (login, password) =>

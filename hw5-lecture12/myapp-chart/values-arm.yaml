@@ -1,0 +1,16 @@
+config:
+  dbname: "otusdb"
+
+auth:
+  image: "lisitsynalex/myapp_auth:hw5-lecture12-arm"
+  replicaCount: 2
+
+backend:
+  image: "lisitsynalex/myapp_backend:hw5-lecture12-arm"
+  replicaCount: 2
+
+migrator:
+  image: "lisitsynalex/myapp_migrator:hw5-lecture12-arm"
+
+mysql:
+  image: "mariadb:10.7.3"
