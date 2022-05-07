@@ -24,6 +24,17 @@ builder.Services.AddTransient(_ => new MySqlConnection(connectionString));
 
 var app = builder.Build();
 
+// Configure base path.
+var pathBase = Environment.GetEnvironmentVariable("ASPNETCORE_APPL_PATH");
+
+if (!string.IsNullOrWhiteSpace(pathBase))
+{
+    app.UsePathBase($"/{pathBase.TrimStart('/')}");
+    Console.WriteLine($"Using PathBase: {pathBase}");
+}
+
+app.UseRouting();
+
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();

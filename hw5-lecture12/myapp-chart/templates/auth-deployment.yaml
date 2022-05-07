@@ -30,6 +30,8 @@ spec:
               port: 80
             successThreshold: 3
           env:
+            - name: "ASPNETCORE_APPL_PATH"
+              value: {{ .Values.auth.ASPNETCORE_APPL_PATH }}                
             - name: "ConnectionString"
               valueFrom:
                 secretKeyRef:

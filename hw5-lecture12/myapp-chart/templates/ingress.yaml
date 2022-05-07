@@ -8,14 +8,14 @@ spec:
     - host: arch.homework
       http:
         paths:
-          - path: /auth
+          - path: {{ .Values.auth.ASPNETCORE_APPL_PATH }}
             pathType: Prefix
             backend:
               service:
                 name: {{ .Release.Name }}-auth-service
                 port:
-                  number: 8000
-          - path: /back
+                  number: 8000            
+          - path: {{ .Values.backend.ASPNETCORE_APPL_PATH }}
             pathType: Prefix
             backend:
               service:

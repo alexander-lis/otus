@@ -4,14 +4,14 @@ docker build -f ./MyApp.Auth/Dockerfile.Default -t lisitsynalex/myapp_auth:hw5-l
 docker build -f ./MyApp.Backend/Dockerfile.Arm -t lisitsynalex/myapp_backend:hw5-lecture12-arm .
 docker build -f ./MyApp.Backend/Dockerfile.Default -t lisitsynalex/myapp_backend:hw5-lecture12 .
 
-docker build -f ./MyApp.DbMigrator/Dockerfile.Arm -t lisitsynalex/myapp_migrator:hw5-lecture12-arm .
-docker build -f ./MyApp.DbMigrator/Dockerfile.Default -t lisitsynalex/myapp_migrator:hw5-lecture12 .
-
 docker push lisitsynalex/myapp_auth:hw5-lecture12-arm
 docker push lisitsynalex/myapp_auth:hw5-lecture12
 
 docker push lisitsynalex/myapp_backend:hw5-lecture12-arm
 docker push lisitsynalex/myapp_backend:hw5-lecture12
+
+docker build -f ./MyApp.DbMigrator/Dockerfile.Arm -t lisitsynalex/myapp_migrator:hw5-lecture12-arm .
+docker build -f ./MyApp.DbMigrator/Dockerfile.Default -t lisitsynalex/myapp_migrator:hw5-lecture12 .
 
 docker push lisitsynalex/myapp_migrator:hw5-lecture12-arm
 docker push lisitsynalex/myapp_migrator:hw5-lecture12
