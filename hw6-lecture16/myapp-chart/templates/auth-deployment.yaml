@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-auth-deployment
+  labels:
+    app: {{ .Release.Name }}-auth
+spec:
+  replicas: {{ .Values.auth.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-auth
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-auth
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-auth
+          image: {{ .Values.auth.image }}
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+            successThreshold: 3
+          env:
+            - name: "ASPNETCORE_APPL_PATH"
+              value: {{ .Values.auth.ASPNETCORE_APPL_PATH }}                
+            - name: "ConnectionString"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: ConnectionString
+            - name: "DbName"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: dbname
+          ports:
+            - containerPort: 80

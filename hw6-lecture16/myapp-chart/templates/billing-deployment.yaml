@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-billing-deployment
+  labels:
+    app: {{ .Release.Name }}-billing
+spec:
+  replicas: {{ .Values.billing.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-billing
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-billing
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-billing
+          image: {{ .Values.billing.image }}
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+            successThreshold: 3
+          env:
+            - name: "ASPNETCORE_APPL_PATH"
+              value: {{ .Values.billing.ASPNETCORE_APPL_PATH }}          
+            - name: "ConnectionString"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: ConnectionString
+            - name: "DbName"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: dbname
+          ports:
+            - containerPort: 80

@@ -1,0 +1,28 @@
+config:
+  dbname: "otusdb"
+
+auth:
+  image: "lisitsynalex/myapp_auth:hw6-lacture16-arm"
+  replicaCount: 1
+  ASPNETCORE_APPL_PATH: '/auth'
+
+backend:
+  image: "lisitsynalex/myapp_backend:hw6-lacture16-arm"
+  replicaCount: 1
+  ASPNETCORE_APPL_PATH: '/back'
+
+billing:
+  image: "lisitsynalex/myapp_billing:hw6-lacture16-arm"
+  replicaCount: 1
+  ASPNETCORE_APPL_PATH: '/billing'
+
+notifications:
+  image: "lisitsynalex/myapp_notifications:hw6-lacture16-arm"
+  replicaCount: 1
+  ASPNETCORE_APPL_PATH: '/notifications'
+
+migrator:
+  image: "lisitsynalex/myapp_migrator:hw6-lacture16-arm"
+
+mysql:
+  image: "mariadb:10.7.3"
