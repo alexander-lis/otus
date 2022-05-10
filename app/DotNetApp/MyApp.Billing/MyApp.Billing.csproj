@@ -4,10 +4,10 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MyApp.Auth.Contract\MyApp.Auth.Contract.csproj" />
       <ProjectReference Include="..\MyApp.Common\MyApp.Common.csproj" />
     </ItemGroup>
 

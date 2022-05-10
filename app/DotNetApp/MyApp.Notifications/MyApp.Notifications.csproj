@@ -4,11 +4,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MyApp.Common\MyApp.Common.csproj" />
+      <ProjectReference Include="..\MyApp.Notifications.Contract\MyApp.Notifications.Contract.csproj" />
     </ItemGroup>
 
 </Project>

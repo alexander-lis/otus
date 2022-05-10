@@ -24,42 +24,51 @@ Console.WriteLine("CREATING DB - FINISH");
 
 connDb.Close();
 
-// Создание таблицы.
 using var connTable = new MySqlConnection($"{connectionString};database={dbName}");
 connTable.Open();
 
+// Удаление таблиц.
 Console.WriteLine("DELETING TABLES - START");
-// Таблицы Auth.
 using var deleteTableCommand1 = connTable.CreateCommand();
-deleteTableCommand1.CommandText = @"drop table if exists auth_users";
+deleteTableCommand1.CommandText = @"
+drop table if exists auth_users;
+drop table if exists billing_accounts;
+drop table if exists notification_log;";
 deleteTableCommand1.ExecuteNonQuery();
-
-// Таблицы Backend.
-using var deleteTableCommand2 = connTable.CreateCommand();
-deleteTableCommand2.CommandText = @"drop table if exists back_users";
-deleteTableCommand2.ExecuteNonQuery();
 Console.WriteLine("DELETING TABLES - FINISH");
 
 Console.WriteLine("CREATING TABLES - START");
-// Таблицы Auth.
+
+// Создание таблиц Auth.
 using var createTableCommand1 = connTable.CreateCommand();
 createTableCommand1.CommandText = @"create table if not exists auth_users
     (id INT NOT NULL AUTO_INCREMENT,    
     login VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
     name VARCHAR(100) NOT NULL,
     PRIMARY KEY (id));";
 createTableCommand1.ExecuteNonQuery();
 
-// Таблицы Backend.
+// Создание таблиц Billing.
 using var createTableCommand2 = connTable.CreateCommand();
-createTableCommand2.CommandText = @"create table if not exists back_users
+createTableCommand2.CommandText = @"create table if not exists billing_accounts
     (id INT NOT NULL AUTO_INCREMENT,    
-    login VARCHAR(100) NOT NULL,
-    name VARCHAR(100) NOT NULL,
+    user_id INT NOT NULL,
+    money INT NOT NULL,
     PRIMARY KEY (id));";
 createTableCommand2.ExecuteNonQuery();
+
+// Создание таблиц Notifications.
+using var createTableCommand3 = connTable.CreateCommand();
+createTableCommand3.CommandText = @"create table if not exists notification_log
+    (id INT NOT NULL AUTO_INCREMENT,    
+    user_id INT NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    datetime DATETIME NOT NULL,
+    PRIMARY KEY (id));";
+createTableCommand3.ExecuteNonQuery();
+
 Console.WriteLine("CREATING TABLES - FINISH");
 
 connTable.Close();
-

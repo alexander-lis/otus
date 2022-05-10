@@ -1,12 +1,18 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Transactions;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MyApp.Auth.Contract.Events;
 using MyApp.Auth.Models;
 using MyApp.Common.Authentication;
+using MyApp.Common.Configuration;
 using MyApp.Common.Infrastructure;
+using MyApp.Common.RabbitMq;
+using MyApp.Notifications.Contract.Commands;
 using MySqlConnector;
 
 namespace MyApp.Auth.Controllers;
@@ -18,12 +24,12 @@ public class AuthController : ControllerBase
 {
     // Поля.
     private readonly MySqlConnection _connection;
+    private readonly IRabbitMqService _rabbitMqService;
 
-    // Скрипты.
     // Скрипты.
     private readonly Func<RegisterUserDto, string> _insertUserSql =
         user =>
-            $"INSERT INTO auth_users (login, password, name) VALUES ('{user.Login}', '{user.Password}', '{user.Name}')";
+            $"INSERT INTO auth_users (login, password, name, email) VALUES ('{user.Login}', '{user.Password}', '{user.Name}', '{user.Email}'); SELECT LAST_INSERT_ID()";
 
     private readonly Func<string, string, string> _selectUserSql =
         (login, password) =>
@@ -33,9 +39,10 @@ public class AuthController : ControllerBase
     private readonly MetricsCollector _metricsCollector;
 
 
-    public AuthController(MySqlConnection connection)
+    public AuthController(MySqlConnection connection, IRabbitMqService rabbitMqService)
     {
         _connection = connection;
+        _rabbitMqService = rabbitMqService;
         _metricsCollector = new MetricsCollector("MyApp.Auth", "AuthController");
     }
 
@@ -44,13 +51,15 @@ public class AuthController : ControllerBase
     {
         return await _metricsCollector.ExecuteWithMetrics("Register", async () =>
         {
-            var rows = await _connection.ExecuteAsync(_insertUserSql(user), cancellationToken);
-
-            if (rows == 0)
-            {
-                return Problem();
-            }
-
+            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            
+            var id = await _connection.ExecuteScalarAsync<int>(_insertUserSql(user), cancellationToken);
+        
+            _rabbitMqService.PublishEvent(new UserCreated(id, user.Login));
+            _rabbitMqService.PublishCommand(new NotifyUserCreated(id, user.Login));
+            
+            transactionScope.Complete();
+            
             return Ok();
         });
     }

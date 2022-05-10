@@ -1,4 +1,4 @@
-using MyApp.Auth.BackgroundServices;
+using MyApp.Billing.BackgroundServices;
 using MyApp.Common.Configuration;
 
 // Create builder.

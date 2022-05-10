@@ -1,0 +1,20 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["MyApp.Notifications/MyApp.Notifications.csproj", "MyApp.Notifications/"]
+RUN dotnet restore "MyApp.Notifications/MyApp.Notifications.csproj"
+COPY . .
+WORKDIR "/src/MyApp.Notifications"
+RUN dotnet build "MyApp.Notifications.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "MyApp.Notifications.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "MyApp.Notifications.dll"]

@@ -1,5 +1,5 @@
-using MyApp.Auth.BackgroundServices;
 using MyApp.Common.Configuration;
+using MyApp.Notifications.BackgroundServices;
 
 // Create builder.
 var builder = WebApplication.CreateBuilder(args);
