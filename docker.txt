@@ -10,20 +10,20 @@ docker build -f ./MyApp.Backend/Dockerfile.Default -t lisitsynalex/myapp_backend
 docker push lisitsynalex/myapp_backend:hw6-lecture16-arm
 docker push lisitsynalex/myapp_backend:hw6-lecture16
 
-docker build -f ./MyApp.Backend/Dockerfile.Arm -t lisitsynalex/myapp_billing:hw6-lecture16-arm .
-docker build -f ./MyApp.Backend/Dockerfile.Default -t lisitsynalex/myapp_billing:hw6-lecture16 .
+docker build -f ./MyApp.Billing/Dockerfile.Arm -t lisitsynalex/myapp_billing:hw6-lecture16-arm .
+docker build -f ./MyApp.Billing/Dockerfile.Default -t lisitsynalex/myapp_billing:hw6-lecture16 .
 
 docker push lisitsynalex/myapp_billing:hw6-lecture16-arm
 docker push lisitsynalex/myapp_billing:hw6-lecture16
 
-docker build -f ./MyApp.Backend/Dockerfile.Arm -t lisitsynalex/myapp_notifications:hw6-lecture16-arm .
-docker build -f ./MyApp.Backend/Dockerfile.Default -t lisitsynalex/myapp_notifications:hw6-lecture16 .
+docker build -f ./MyApp.Notifications/Dockerfile.Arm -t lisitsynalex/myapp_notifications:hw6-lecture16-arm .
+docker build -f ./MyApp.Notifications/Dockerfile.Default -t lisitsynalex/myapp_notifications:hw6-lecture16 .
 
 docker push lisitsynalex/myapp_notifications:hw6-lecture16-arm
 docker push lisitsynalex/myapp_notifications:hw6-lecture16
 
-docker build -f ./MyApp.Backend/Dockerfile.Arm -t lisitsynalex/myapp_orders:hw6-lecture16-arm .
-docker build -f ./MyApp.Backend/Dockerfile.Default -t lisitsynalex/myapp_orders:hw6-lecture16 .
+docker build -f ./MyApp.Orders/Dockerfile.Arm -t lisitsynalex/myapp_orders:hw6-lecture16-arm .
+docker build -f ./MyApp.Orders/Dockerfile.Default -t lisitsynalex/myapp_orders:hw6-lecture16 .
 
 docker push lisitsynalex/myapp_orders:hw6-lecture16-arm
 docker push lisitsynalex/myapp_orders:hw6-lecture16

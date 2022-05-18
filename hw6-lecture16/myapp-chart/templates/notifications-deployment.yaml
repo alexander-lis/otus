@@ -32,7 +32,7 @@ spec:
           env:
             - name: "ASPNETCORE_APPL_PATH"
               value: {{ .Values.notifications.ASPNETCORE_APPL_PATH }}          
-            - name: "ConnectionString"
+            - name: "DbConnectionString"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
