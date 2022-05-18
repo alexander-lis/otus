@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult> Register(RegisterUserDto user, CancellationToken cancellationToken)
+    public async Task<ActionResult<int>> Register(RegisterUserDto user, CancellationToken cancellationToken)
     {
         return await _metricsCollector.ExecuteWithMetrics("Register", async () =>
         {
@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
             
             transactionScope.Complete();
             
-            return Ok();
+            return Ok(id);
         });
     }
 

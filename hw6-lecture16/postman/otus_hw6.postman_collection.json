@@ -1,0 +1,411 @@
+{
+	"info": {
+		"_postman_id": "35b7cb8d-5f23-4a05-9917-367a3b4bf9c5",
+		"name": "otus_hw6",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register USER 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Register user 1 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    pm.variables.set(\"hw6_id1\", pm.request.body.raw);",
+							"    console.info(pm.request.body.raw)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var login1 = pm.variables.replaceIn(\"{{$randomFirstName}}\");",
+							"var password1 =  pm.variables.replaceIn(\"{{$randomPassword}}\");",
+							"pm.variables.set(\"hw6_login1\", login1);",
+							"pm.variables.set(\"hw6_password1\", password1);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"{{hw5_login1}}\",\n    \"password\": \"{{hw5_password1}}\",\n    \"name\": \"{{hw5_login1}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Register",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"auth",
+						"Register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create ORDER 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login user 1 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    pm.variables.set(\"hw5_token1\", pm.response.text());",
+							"    console.info(\"JWT Token:\" + pm.response.text());",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{hw6_id1}},\n    \"title\": \"User's {{hw6_id1}} good test order\",\n    \"price\": 500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/orders",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get USER 1 ACCOUNT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Set user 1 name to 'UpdatedUser1' returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    console.info(pm.request.headers.get(\"Authorization\"));",
+							"    console.info(pm.request.body.raw)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{hw5_token1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"UpdatedUser1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/billing/{{}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"billing",
+						"{{}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get USER 1 NOTIFICATIONS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Read user 1 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"Read user 1 returns updated name\", () => {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.name).to.eql(\"UpdatedUser1\");",
+							"    console.info(pm.request.headers.get(\"Authorization\"));",
+							"    console.info(responseJson)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{hw5_token1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Account",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"auth",
+						"Account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create ORDER 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Register user 2 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    console.info(pm.request.body.raw)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{hw6_id1}},\n    \"title\": \"User's {{hw6_id1}} bad test order\",\n    \"price\": 800\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/orders",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get USER 1 ACCOUNT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login user 2 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    pm.variables.set(\"hw5_token1\", pm.response.text());",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Token?login={{hw5_login2}}&password={{hw5_password2}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"auth",
+						"Token"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "{{hw5_login2}}"
+						},
+						{
+							"key": "password",
+							"value": "{{hw5_password2}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get USER 1 NOTIFICATIONS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Read user 2 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"Read user 2 returns user 2 name not user 1\", () => {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.name).to.eql(pm.variables.get(\"hw5_login2\"));",
+							"    console.info(pm.request.headers.get(\"Authorization\"));",
+							"    console.info(responseJson)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{hw5_token1}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Account",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"auth",
+						"Account"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "port",
+			"value": "80"
+		},
+		{
+			"key": "protocol",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "arch.homework",
+			"type": "string"
+		}
+	]
+}

@@ -21,4 +21,4 @@ spec:
                 name: {{ .Release.Name }}-config
                 key: dbname
       restartPolicy: Never
-  backoffLimit: 10
+  backoffLimit: 20

@@ -37,6 +37,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-secrets
                   key: ConnectionString
+            - name: "RmqConnectionString"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: RmqConnectionString                  
             - name: "DbName"
               valueFrom:
                 configMapKeyRef:
