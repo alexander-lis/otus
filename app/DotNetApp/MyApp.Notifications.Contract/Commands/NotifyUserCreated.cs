@@ -4,13 +4,12 @@ namespace MyApp.Notifications.Contract.Commands;
 
 public class NotifyUserCreated : ICommand
 {
-    public NotifyUserCreated(int id, string email)
+    public int UserId { get; }
+    public string Email { get; }
+
+    public NotifyUserCreated(int userId, string email)
     {
-        Id = id;
+        UserId = userId;
         Email = email;
     }
-
-    public int Id { get; }
-
-    public string Email { get; }
 }

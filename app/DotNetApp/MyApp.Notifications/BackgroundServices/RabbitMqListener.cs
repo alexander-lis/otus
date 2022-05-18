@@ -2,6 +2,7 @@ using System.Transactions;
 using Dapper;
 using MyApp.Common.RabbitMq;
 using MyApp.Notifications.Contract.Commands;
+using MyApp.Notifications.Models;
 using MySqlConnector;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -15,11 +16,18 @@ public class RabbitMqListener : BackgroundService
     private readonly MySqlConnection _dbConnection;
     
     // Скрипты.
-    // Скрипты.
-    private readonly Func<NotifyUserCreated, DateTime, string> _insertNotificationLogSql =
-        (command, now) =>
-            $"INSERT INTO notification_log (user_id, email, datetime) VALUES ('{command.Id}', '{command.Email}', '{now.ToString("yyyy-MM-dd H:mm:ss")}'); SELECT LAST_INSERT_ID()";
+    private readonly Func<int, string, string, DateTime, string> _insertNotificationMessageSql =
+        (userId, email, text, now) =>
+            $"INSERT INTO notification_history (userid, email, message, datetime) VALUES ('{userId}', '{email}', '{text}', '{now.ToString("yyyy-MM-dd H:mm:ss")}'); SELECT LAST_INSERT_ID()";
 
+    private readonly Func<int, string, string> _insertRecipientSql =
+        (userId, email) =>
+            $"INSERT INTO notification_recipients (userid, email) VALUES ('{userId}', '{email}')";
+
+    private readonly Func<int, string> _getRecipientSql =
+        (userId) =>
+            $"SELECT * FROM notification_recipients WHERE userid = {userId}";
+    
     public RabbitMqListener(IConnectionFactory connectionFactory, MySqlConnection dbConnection)
     {
         var rmqConnection = connectionFactory.CreateConnection();
@@ -32,31 +40,114 @@ public class RabbitMqListener : BackgroundService
     protected override Task ExecuteAsync(CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        ConsumeNotifyUserCreatedCommand();
+        ConsumeCommands();
         return Task.CompletedTask;
     }
 
-    private void ConsumeNotifyUserCreatedCommand()
+    private void ConsumeCommands()
     {
-        var consumer = new EventingBasicConsumer(_model);
-        consumer.Received += (ch, ea) =>
+        // NotifyUserCreated.
+        var userCreatedConsumer = new EventingBasicConsumer(_model);
+        userCreatedConsumer.Received += (ch, ea) =>
         {
+            Console.WriteLine("Notifications: NotifyUserCreated command received.");
+
             using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             var datetime = DateTime.UtcNow;
             var command = RabbitMqUtils.DeserealizeMessage<NotifyUserCreated>(ea);
-            var sql = _insertNotificationLogSql(command, datetime);
+            
+            // Insert recipient.
+            var sql = _insertRecipientSql(command.UserId, command.Email);
+            _dbConnection.Execute(sql);
+            
+            // Send message.
+            var message = $"You are registered!";
+            sql = _insertNotificationMessageSql(command.UserId, command.Email, message, datetime);
+            _dbConnection.Execute(sql);
+            
+            // Ack.
+            _model.BasicAck(ea.DeliveryTag, false);
+            transactionScope.Complete();
+        };
+
+        // NotifyOrderCreated.
+        var orderCreatedConsumer = new EventingBasicConsumer(_model);
+        orderCreatedConsumer.Received += (ch, ea) =>
+        {
+            Console.WriteLine("Notifications: NotifyOrderCreated command received.");
+
+            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            var datetime = DateTime.UtcNow;
+            var command = RabbitMqUtils.DeserealizeMessage<NotifyOrderCreated>(ea);
+            
+            // Get recipient.
+            var sql = _getRecipientSql(command.UserId);
+            var recipient = _dbConnection.QueryFirst<Recipient>(sql);
+            
+            // Send message.
+            var message = $"You have new order {command.OrderTitle} with price {command.OrderPrice}";
+            sql = _insertNotificationMessageSql(recipient.UserId, recipient.Email, message, datetime);
             _dbConnection.Execute(sql);
             _model.BasicAck(ea.DeliveryTag, false);
             transactionScope.Complete();
-            Console.WriteLine("Notification sent to " + command.Email);
         };
+        
+        // NotifyOrderPaymentSucceded.
+        var orderPaymentSuccededConsumer = new EventingBasicConsumer(_model);
+        orderPaymentSuccededConsumer.Received += (ch, ea) =>
+        {
+            Console.WriteLine("Notifications: NotifyOrderPaymentSucceded command received.");
 
-        var queueName = RabbitMqUtils.GetQueueName(typeof(NotifyUserCreated), ServiceName.Notifications);
-        _model.BasicConsume(queueName, false, consumer);
+            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            var datetime = DateTime.UtcNow;
+            var command = RabbitMqUtils.DeserealizeMessage<NotifyOrderPaymentSucceded>(ea);
+            
+            // Get recipient.
+            var sql = _getRecipientSql(command.UserId);
+            var recipient = _dbConnection.QueryFirst<Recipient>(sql);
+            
+            // Send message.
+            var message = $"The order {command.OrderTitle} with price {command.OrderPrice} successfully payed!";
+            sql = _insertNotificationMessageSql(recipient.UserId, recipient.Email, message, datetime);
+            _dbConnection.Execute(sql);
+            _model.BasicAck(ea.DeliveryTag, false);
+            transactionScope.Complete();
+        };
+        
+        // NotifyOrderPaymentDeclined.
+        var orderPaymentDeclinedConsumer = new EventingBasicConsumer(_model);
+        orderPaymentDeclinedConsumer.Received += (ch, ea) =>
+        {
+            Console.WriteLine("Notifications: NotifyOrderPaymentDeclined command received.");
+
+            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            var datetime = DateTime.UtcNow;
+            var command = RabbitMqUtils.DeserealizeMessage<NotifyOrderPaymentSucceded>(ea);
+            
+            // Get recipient.
+            var sql = _getRecipientSql(command.UserId);
+            var recipient = _dbConnection.QueryFirst<Recipient>(sql);
+            
+            // Send message.
+            var message = $"The order {command.OrderTitle} with price {command.OrderPrice} declined!";
+            sql = _insertNotificationMessageSql(recipient.UserId, recipient.Email, message, datetime);
+            _dbConnection.Execute(sql);
+            _model.BasicAck(ea.DeliveryTag, false);
+            transactionScope.Complete();
+        };
+        
+        // Apply consumers.
+        _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyUserCreated), ServiceName.Notifications), false, userCreatedConsumer);
+        _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyOrderCreated), ServiceName.Notifications), false, orderCreatedConsumer);
+        _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyOrderPaymentSucceded), ServiceName.Notifications), false, orderPaymentSuccededConsumer);
+        _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyOrderPaymentDeclined), ServiceName.Notifications), false, orderPaymentDeclinedConsumer);
     }
 
     private void Initialize()
     {
         RabbitMqUtils.InitializeServiceQueueForMessageType(_model, typeof(NotifyUserCreated), ServiceName.Notifications);
+        RabbitMqUtils.InitializeServiceQueueForMessageType(_model, typeof(NotifyOrderCreated), ServiceName.Notifications);
+        RabbitMqUtils.InitializeServiceQueueForMessageType(_model, typeof(NotifyOrderPaymentSucceded), ServiceName.Notifications);
+        RabbitMqUtils.InitializeServiceQueueForMessageType(_model, typeof(NotifyOrderPaymentDeclined), ServiceName.Notifications);
     }
 }

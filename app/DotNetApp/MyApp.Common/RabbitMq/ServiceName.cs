@@ -4,5 +4,6 @@ public enum ServiceName
 {
     Auth = 1,
     Billing = 2,
-    Notifications = 3
+    Notifications = 3,
+    Orders = 4
 }

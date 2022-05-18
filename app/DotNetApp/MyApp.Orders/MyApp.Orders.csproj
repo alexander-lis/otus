@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MyApp.Auth.Contract\MyApp.Auth.Contract.csproj" />
+        <ProjectReference Include="..\MyApp.Common\MyApp.Common.csproj" />
+        <ProjectReference Include="..\MyApp.Notifications.Contract\MyApp.Notifications.Contract.csproj" />
+        <ProjectReference Include="..\MyApp.Orders.Contract\MyApp.Orders.Contract.csproj" />
+    </ItemGroup>
+    
+</Project>

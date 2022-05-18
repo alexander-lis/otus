@@ -31,10 +31,12 @@ public class RabbitMqService : IRabbitMqService
         var routingKey = RabbitMqUtils.GetRoutingKey(type);
 
         using var connection = _connectionFactory.CreateConnection();
-        using var channel = connection.CreateModel();
+        using var model = connection.CreateModel();
 
+        RabbitMqUtils.ExchangeDeclare(model, exchangeName);
+        
         var body = Encoding.UTF8.GetBytes(message);
 
-        channel.BasicPublish(exchangeName, routingKey, null, body);
+        model.BasicPublish(exchangeName, routingKey, null, body);
     }
 }
