@@ -37,14 +37,14 @@ public class OrdersController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult> Register(CreateOrderDto order, CancellationToken cancellationToken)
+    public async Task<ActionResult> CreateOrder(CreateOrderDto order, CancellationToken cancellationToken)
     {
-        return await _metricsCollector.ExecuteWithMetrics("Register", async () =>
+        return await _metricsCollector.ExecuteWithMetrics("Create", async () =>
         {
             using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             
             var id = await _connection.ExecuteScalarAsync<int>(_insertOrderSql(order), cancellationToken);
-        
+
             _rabbitMqService.PublishEvent(new OrderCreated(order.UserId, id, order.Title, order.Price));
             _rabbitMqService.PublishCommand(new NotifyOrderCreated(order.UserId, id, order.Title, order.Price));
             

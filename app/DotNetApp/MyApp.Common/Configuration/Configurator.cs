@@ -20,7 +20,7 @@ public static class Configurator
     {
         // Add services to the container.
         builder.Services.AddControllers();
-        builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+        builder.Services.AddTransient<IRabbitMqService, RabbitMqService>();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();

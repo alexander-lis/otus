@@ -39,4 +39,28 @@ public class RabbitMqService : IRabbitMqService
 
         model.BasicPublish(exchangeName, routingKey, null, body);
     }
+
+    public static void PublishEvent(IModel model, IEvent obj)
+    {
+        Publish(model, obj);
+    }
+
+    public static void PublishCommand(IModel model, ICommand obj)
+    {
+        Publish(model, obj);
+    }
+    
+    public static void Publish(IModel model, object obj)
+    {
+        var type = obj.GetType();
+        var message = JsonSerializer.Serialize(obj);
+        var exchangeName = RabbitMqUtils.GetExchangeName(type);
+        var routingKey = RabbitMqUtils.GetRoutingKey(type);
+
+        RabbitMqUtils.ExchangeDeclare(model, exchangeName);
+        
+        var body = Encoding.UTF8.GetBytes(message);
+
+        model.BasicPublish(exchangeName, routingKey, null, body);
+    }
 }

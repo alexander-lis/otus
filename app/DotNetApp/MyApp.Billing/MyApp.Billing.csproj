@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\MyApp.Auth.Contract\MyApp.Auth.Contract.csproj" />
       <ProjectReference Include="..\MyApp.Common\MyApp.Common.csproj" />
+      <ProjectReference Include="..\MyApp.Notifications.Contract\MyApp.Notifications.Contract.csproj" />
       <ProjectReference Include="..\MyApp.Orders.Contract\MyApp.Orders.Contract.csproj" />
     </ItemGroup>
 

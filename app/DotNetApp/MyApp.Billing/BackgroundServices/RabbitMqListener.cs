@@ -2,6 +2,7 @@ using Dapper;
 using MyApp.Auth.Contract.Events;
 using MyApp.Billing.Models;
 using MyApp.Common.RabbitMq;
+using MyApp.Notifications.Contract.Commands;
 using MyApp.Orders.Contract.Events;
 using MySqlConnector;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ public class RabbitMqListener : BackgroundService
 {
     private readonly IModel _model;
     private readonly MySqlConnection _dbConnection;
-
+    private readonly IRabbitMqService _rabbitMqService;
     
     private readonly Func<int, int, string> _insertBillingAccountSql =
         (userId, money) =>
@@ -28,11 +29,12 @@ public class RabbitMqListener : BackgroundService
         (userId, money) =>
             $"UPDATE billing_accounts SET money = {money} WHERE userid = {userId}";
     
-    public RabbitMqListener(IConnectionFactory connectionFactory, MySqlConnection dbConnection)
+    public RabbitMqListener(IConnectionFactory connectionFactory, MySqlConnection dbConnection, IRabbitMqService rabbitMqService)
     {
         var connection = connectionFactory.CreateConnection();
         _model = connection.CreateModel();
         _dbConnection = dbConnection;
+        _rabbitMqService = rabbitMqService;
 
         Initialize();
     }
@@ -63,20 +65,21 @@ public class RabbitMqListener : BackgroundService
         orderCreatedConsumer.Received += (ch, ea) =>
         {
             Console.WriteLine("Billing: OrderCreated event received.");
-            var content = RabbitMqUtils.DeserealizeMessage<OrderCreated>(ea);
+            var order = RabbitMqUtils.DeserealizeMessage<OrderCreated>(ea);
 
-            var sql = _getBillingAccountSql(content.UserId);
+            var sql = _getBillingAccountSql(order.UserId);
             var acc = _dbConnection.QueryFirst<BillingAccount>(sql);
 
-            if (acc.Money >= content.OrderPrice)
+            if (acc.Money >= order.OrderPrice)
             {
-                var sql2 = _updateBillingAccountSql(content.UserId, acc.Money - content.OrderPrice);
+                var sql2 = _updateBillingAccountSql(order.UserId, acc.Money - order.OrderPrice);
                 _dbConnection.Execute(sql2);
                 Console.WriteLine("Billing: OrderCreated event publishes NotifyOrderPaymentSucceded.");
             }
             else
             {
                 Console.WriteLine("Billing: OrderCreated event publishes NotifyOrderPaymentDeclined.");
+                RabbitMqService.PublishCommand(_model, new NotifyOrderPaymentDeclined(order.UserId, order.OrderId, order.OrderTitle, order.OrderPrice));
             }
             
             
