@@ -39,7 +39,7 @@ public class OrdersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateOrder(CreateOrderDto order, CancellationToken cancellationToken)
     {
-        return await _metricsCollector.ExecuteWithMetrics("Create", async () =>
+        return await _metricsCollector.ExecuteWithMetrics("GetByUserId", async () =>
         {
             using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             

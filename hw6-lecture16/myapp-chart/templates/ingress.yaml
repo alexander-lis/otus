@@ -22,3 +22,24 @@ spec:
                 name: {{ .Release.Name }}-backend-service
                 port:
                   number: 8000
+          - path: {{ .Values.billing.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-billing-service
+                port:
+                  number: 8000
+          - path: {{ .Values.notifications.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-notifications-service
+                port:
+                  number: 8000
+          - path: {{ .Values.orders.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-orders-service
+                port:
+                  number: 8000

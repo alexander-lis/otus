@@ -21,7 +21,6 @@ orders:
   replicaCount: 1
   ASPNETCORE_APPL_PATH: '/orders'
 
-
 notifications:
   image: "lisitsynalex/myapp_notifications:hw6-lecture16"
   replicaCount: 1
