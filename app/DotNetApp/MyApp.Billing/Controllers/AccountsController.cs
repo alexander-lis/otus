@@ -21,6 +21,9 @@ public class AccountsController : ControllerBase
     private readonly Func<int, string> _selectAccountSql =
         userid => $"SELECT * FROM billing_accounts WHERE userid = {userid}";
 
+    private readonly Func<int, int, string> _updateAccountSql =
+        (userid, money) => $"UPDATE billing_accounts SET money = {money} WHERE userid = {userid}";
+
     // Метрики.
     private readonly MetricsCollector _metricsCollector;
 
@@ -36,8 +39,22 @@ public class AccountsController : ControllerBase
     {
         return await _metricsCollector.ExecuteWithMetrics("GetByUserId", async () =>
         {
-            var notifications = await _connection.QueryFirstOrDefaultAsync<BillingAccount>(_selectAccountSql(userId), cancellationToken);
+            var notifications =
+                await _connection.QueryFirstOrDefaultAsync<BillingAccount>(_selectAccountSql(userId),
+                    cancellationToken);
             return Ok(notifications);
+        });
+    }
+
+    [HttpPut("{userId}")]
+    public async Task<ActionResult> Update(int userId, [FromBody] UpdateBillingAccountDto dto,
+        CancellationToken cancellationToken)
+    {
+        return await _metricsCollector.ExecuteWithMetrics("Update", async () =>
+        {
+            await _connection.QueryFirstOrDefaultAsync<BillingAccount>(_updateAccountSql(userId, dto.Money),
+                cancellationToken);
+            return Ok();
         });
     }
 }

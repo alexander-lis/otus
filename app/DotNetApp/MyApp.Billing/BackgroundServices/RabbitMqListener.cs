@@ -75,6 +75,7 @@ public class RabbitMqListener : BackgroundService
                 var sql2 = _updateBillingAccountSql(order.UserId, acc.Money - order.OrderPrice);
                 _dbConnection.Execute(sql2);
                 Console.WriteLine("Billing: OrderCreated event publishes NotifyOrderPaymentSucceded.");
+                RabbitMqService.PublishCommand(_model, new NotifyOrderPaymentSucceded(order.UserId, order.OrderId, order.OrderTitle, order.OrderPrice));
             }
             else
             {

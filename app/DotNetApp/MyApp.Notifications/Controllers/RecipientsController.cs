@@ -36,7 +36,7 @@ public class RecipientsController : ControllerBase
     [HttpGet("{userId}/notifications")]
     public async Task<ActionResult<ICollection<Notification>>> GetByUserId(int userId, CancellationToken cancellationToken)
     {
-        return await _metricsCollector.ExecuteWithMetrics("Create", async () =>
+        return await _metricsCollector.ExecuteWithMetrics("GetByUserId", async () =>
         {
             var notifications = await _connection.QueryAsync<Notification>(_selectNotificationsSql(userId), cancellationToken);
             return Ok(notifications);

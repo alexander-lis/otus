@@ -14,8 +14,8 @@
 						"exec": [
 							"pm.test(\"Register user 1 returns 200\", () => {",
 							"    pm.response.to.have.status(200);",
-							"    pm.variables.set(\"hw6_id1\", pm.request.body.raw);",
-							"    console.info(pm.request.body.raw)",
+							"    pm.collectionVariables.set(\"hw6_id1\", pm.response.text());",
+							"    console.info(pm.collectionVariables.get(\"hw6_id1\"))",
 							"})",
 							""
 						],
@@ -28,8 +28,8 @@
 						"exec": [
 							"var login1 = pm.variables.replaceIn(\"{{$randomFirstName}}\");",
 							"var password1 =  pm.variables.replaceIn(\"{{$randomPassword}}\");",
-							"pm.variables.set(\"hw6_login1\", login1);",
-							"pm.variables.set(\"hw6_password1\", password1);"
+							"pm.collectionVariables.set(\"hw6_login1\", login1);",
+							"pm.collectionVariables.set(\"hw6_password1\", password1);"
 						],
 						"type": "text/javascript"
 					}
@@ -40,7 +40,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"login\": \"{{hw5_login1}}\",\n    \"password\": \"{{hw5_password1}}\",\n    \"name\": \"{{hw5_login1}}\"\n}",
+					"raw": "{\n    \"login\": \"{{hw6_login1}}\",\n    \"password\": \"{{hw6_password1}}\",\n    \"name\": \"{{hw6_login1}}\",\n    \"email\": \"{{hw6_login1}}@gmail.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -63,16 +63,62 @@
 			"response": []
 		},
 		{
+			"name": "Get USER 1 ACCOUNT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Has money 1000\", () => {",
+							"    var data = pm.response.json();",
+							"",
+							"    pm.expect(data.money).to.equal(1000);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/billing/{{hw6_id1}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"billing",
+						"{{hw6_id1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create ORDER 1",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Login user 1 returns 200\", () => {",
+							"pm.test(\"Create order 1 returns 200\", () => {",
 							"    pm.response.to.have.status(200);",
-							"    pm.variables.set(\"hw5_token1\", pm.response.text());",
-							"    console.info(\"JWT Token:\" + pm.response.text());",
 							"})",
 							""
 						],
@@ -85,10 +131,17 @@
 					"type": "noauth"
 				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": {{hw6_id1}},\n    \"title\": \"User's {{hw6_id1}} good test order\",\n    \"price\": 500\n}",
+					"raw": "{\n    \"userId\": {{hw6_id1}},\n    \"title\": \"Good order\",\n    \"price\": 500\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -96,7 +149,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{protocol}}://{{url}}:{{port}}/orders/orders",
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{url}}"
@@ -104,7 +157,7 @@
 					"port": "{{port}}",
 					"path": [
 						"orders",
-						"orders"
+						""
 					]
 				}
 			},
@@ -117,10 +170,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Set user 1 name to 'UpdatedUser1' returns 200\", () => {",
-							"    pm.response.to.have.status(200);",
-							"    console.info(pm.request.headers.get(\"Authorization\"));",
-							"    console.info(pm.request.body.raw)",
+							"pm.test(\"Has money 500\", () => {",
+							"    var data = pm.response.json();",
+							"",
+							"    pm.expect(data.money).to.equal(500);",
 							"})",
 							""
 						],
@@ -128,33 +181,14 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{hw5_token1}}",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"UpdatedUser1\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{protocol}}://{{url}}:{{port}}/billing/{{}}",
+					"raw": "{{protocol}}://{{url}}:{{port}}/billing/{{hw6_id1}}",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{url}}"
@@ -162,7 +196,7 @@
 					"port": "{{port}}",
 					"path": [
 						"billing",
-						"{{}}"
+						"{{hw6_id1}}"
 					]
 				}
 			},
@@ -175,17 +209,16 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Read user 1 returns 200\", () => {",
-							"    pm.response.to.have.status(200);",
-							"})",
+							"pm.test(\"Has good message\", () => {",
+							"    var data = pm.response.json();",
 							"",
-							"pm.test(\"Read user 1 returns updated name\", () => {",
-							"    const responseJson = pm.response.json();",
-							"    pm.expect(responseJson.name).to.eql(\"UpdatedUser1\");",
-							"    console.info(pm.request.headers.get(\"Authorization\"));",
-							"    console.info(responseJson)",
-							"})",
-							""
+							"    var filteredData = data.filter(f => {",
+							"        return f.message == 'The order Good order with price 500 successfully payed!'",
+							"    })",
+							"",
+							"    console.info(filteredData.length)",
+							"    pm.expect(filteredData.length).to.equal(1);",
+							"})"
 						],
 						"type": "text/javascript"
 					}
@@ -193,27 +226,21 @@
 			],
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{hw5_token1}}",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Account",
+					"raw": "{{protocol}}://{{url}}:{{port}}/notifications/{{hw6_id1}}/notifications",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{url}}"
 					],
 					"port": "{{port}}",
 					"path": [
-						"auth",
-						"Account"
+						"notifications",
+						"{{hw6_id1}}",
+						"notifications"
 					]
 				}
 			},
@@ -226,7 +253,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Register user 2 returns 200\", () => {",
+							"pm.test(\"Create order 2 returns 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"    console.info(pm.request.body.raw)",
 							"})",
@@ -250,7 +277,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": {{hw6_id1}},\n    \"title\": \"User's {{hw6_id1}} bad test order\",\n    \"price\": 800\n}",
+					"raw": "{\n    \"userId\": {{hw6_id1}},\n    \"title\": \"Bad order\",\n    \"price\": 800\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -258,14 +285,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{protocol}}://{{url}}:{{port}}/orders/orders",
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{url}}"
 					],
 					"port": "{{port}}",
 					"path": [
-						"orders",
 						"orders"
 					]
 				}
@@ -279,7 +305,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Login user 2 returns 200\", () => {",
+							"pm.test(\"Has money 500\", () => {",
 							"    pm.response.to.have.status(200);",
 							"    pm.variables.set(\"hw5_token1\", pm.response.text());",
 							"})",
@@ -296,25 +322,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Token?login={{hw5_login2}}&password={{hw5_password2}}",
+					"raw": "{{protocol}}://{{url}}:{{port}}/billing/{{hw6_id1}}",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{url}}"
 					],
 					"port": "{{port}}",
 					"path": [
-						"auth",
-						"Token"
-					],
-					"query": [
-						{
-							"key": "login",
-							"value": "{{hw5_login2}}"
-						},
-						{
-							"key": "password",
-							"value": "{{hw5_password2}}"
-						}
+						"billing",
+						"{{hw6_id1}}"
 					]
 				}
 			},
@@ -327,17 +343,16 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Read user 2 returns 200\", () => {",
-							"    pm.response.to.have.status(200);",
-							"})",
+							"pm.test(\"Has bad message\", () => {",
+							"    var data = pm.response.json();",
 							"",
-							"pm.test(\"Read user 2 returns user 2 name not user 1\", () => {",
-							"    const responseJson = pm.response.json();",
-							"    pm.expect(responseJson.name).to.eql(pm.variables.get(\"hw5_login2\"));",
-							"    console.info(pm.request.headers.get(\"Authorization\"));",
-							"    console.info(responseJson)",
-							"})",
-							""
+							"    var filteredData = data.filter(f => {",
+							"        return f.message == 'The order Bad order with price 800 declined!'",
+							"    })",
+							"",
+							"    console.info(filteredData.length)",
+							"    pm.expect(filteredData.length).to.equal(1);",
+							"})"
 						],
 						"type": "text/javascript"
 					}
@@ -345,27 +360,21 @@
 			],
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{hw5_token1}}",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Account",
+					"raw": "{{protocol}}://{{url}}:{{port}}/notifications/{{hw6_id1}}/notifications",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{url}}"
 					],
 					"port": "{{port}}",
 					"path": [
-						"auth",
-						"Account"
+						"notifications",
+						"{{hw6_id1}}",
+						"notifications"
 					]
 				}
 			},
@@ -406,6 +415,18 @@
 			"key": "url",
 			"value": "arch.homework",
 			"type": "string"
+		},
+		{
+			"key": "hw6_login1",
+			"value": ""
+		},
+		{
+			"key": "hw6_password1",
+			"value": ""
+		},
+		{
+			"key": "hw6_id1",
+			"value": ""
 		}
 	]
 }
