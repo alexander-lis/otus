@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "5866caa3-c688-4e96-89ba-9790d2252414",
+		"name": "otus_hw7",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register USER 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Register user 1 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    pm.collectionVariables.set(\"hw7_id1\", pm.response.text());",
+							"    console.info(pm.collectionVariables.get(\"hw7_id1\"))",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var login1 = pm.variables.replaceIn(\"{{$randomFirstName}}\");",
+							"var password1 =  pm.variables.replaceIn(\"{{$randomPassword}}\");",
+							"pm.collectionVariables.set(\"hw7_login1\", login1);",
+							"pm.collectionVariables.set(\"hw7_password1\", password1);",
+							"",
+							"var uuid = require(\"uuid\");",
+							"",
+							"var idempotencyKey1 = uuid.v4();",
+							"pm.collectionVariables.set(\"hw7-idempotencyKey1\", idempotencyKey1);",
+							"console.log(\"idempotencyKey1: \" + idempotencyKey1);",
+							"",
+							"var idempotencyKey2 = uuid.v4();",
+							"pm.collectionVariables.set(\"hw7-idempotencyKey2\", idempotencyKey2);",
+							"console.log(\"idempotencyKey2: \" + idempotencyKey2);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"{{hw7_login1}}\",\n    \"password\": \"{{hw7_password1}}\",\n    \"name\": \"{{hw7_login1}}\",\n    \"email\": \"{{hw7_login1}}@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Register",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"auth",
+						"Register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create ORDER 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create order 1 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Idempotency-Key",
+						"value": "{{hw7-idempotencyKey1}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{hw7_id1}},\n    \"title\": \"Good order\",\n    \"price\": 500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create ORDER 1 same key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create order 1 same key returns 500\", () => {",
+							"    pm.response.to.have.status(500);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Idempotency-Key",
+						"value": "{{hw7-idempotencyKey1}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{hw7_id1}},\n    \"title\": \"Good order\",\n    \"price\": 500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create ORDER 2 other key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create order 2 other key returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Idempotency-Key",
+						"value": "{{hw7-idempotencyKey2}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{hw7_id1}},\n    \"title\": \"Good order\",\n    \"price\": 500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "port",
+			"value": "80"
+		},
+		{
+			"key": "protocol",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "arch.homework",
+			"type": "string"
+		},
+		{
+			"key": "hw7_login1",
+			"value": ""
+		},
+		{
+			"key": "hw7_password1",
+			"value": ""
+		},
+		{
+			"key": "hw7_id1",
+			"value": ""
+		},
+		{
+			"key": "hw7-idempotencyKey1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hw7-idempotencyKey2",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
