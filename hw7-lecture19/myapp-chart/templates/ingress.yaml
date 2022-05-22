@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: arch.homework
+      http:
+        paths:
+          - path: {{ .Values.auth.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-auth-service
+                port:
+                  number: 8000            
+          - path: {{ .Values.backend.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-backend-service
+                port:
+                  number: 8000
+          - path: {{ .Values.billing.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-billing-service
+                port:
+                  number: 8000
+          - path: {{ .Values.notifications.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-notifications-service
+                port:
+                  number: 8000
+          - path: {{ .Values.orders.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-orders-service
+                port:
+                  number: 8000
