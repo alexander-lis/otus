@@ -35,7 +35,8 @@ drop table if exists auth_users;
 drop table if exists billing_accounts;
 drop table if exists notification_history;
 drop table if exists notification_recipients;
-drop table if exists orders_orders;";
+drop table if exists orders_orders;
+drop table if exists orders_idempotency;";
 deleteTableCommand1.ExecuteNonQuery();
 Console.WriteLine("DELETING TABLES - FINISH");
 
@@ -89,9 +90,15 @@ create table if not exists orders_orders
     title VARCHAR(100) NOT NULL,
     price int NOT NULL,
     PRIMARY KEY (id));
+
+create table if not exists orders_idempotency
+    (id VARCHAR(36) NOT NULL,
+    validto DATETIME NOT NULL,
+    PRIMARY KEY (id));
 ";
 createTableCommand4.ExecuteNonQuery();
 
+//
 
 Console.WriteLine("CREATING TABLES - FINISH");
 
