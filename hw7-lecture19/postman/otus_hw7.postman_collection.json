@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "5866caa3-c688-4e96-89ba-9790d2252414",
 		"name": "otus_hw7",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "244605"
 	},
 	"item": [
 		{
