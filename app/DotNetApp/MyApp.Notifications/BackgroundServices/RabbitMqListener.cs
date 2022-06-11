@@ -122,7 +122,7 @@ public class RabbitMqListener : BackgroundService
 
             using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             var datetime = DateTime.UtcNow;
-            var command = RabbitMqUtils.DeserealizeMessage<NotifyOrderPaymentSucceded>(ea);
+            var command = RabbitMqUtils.DeserealizeMessage<NotifyOrderPaymentDeclined>(ea);
             
             // Get recipient.
             var sql = _getRecipientSql(command.UserId);
@@ -136,11 +136,34 @@ public class RabbitMqListener : BackgroundService
             transactionScope.Complete();
         };
         
+        // NotifyOrderReturned.
+        var orderReturnedConsumer = new EventingBasicConsumer(_model);
+        orderReturnedConsumer.Received += (ch, ea) =>
+        {
+            Console.WriteLine("Notifications: NotifyOrderReturned command received.");
+
+            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            var datetime = DateTime.UtcNow;
+            var command = RabbitMqUtils.DeserealizeMessage<NotifyOrderReturned>(ea);
+            
+            // Get recipient.
+            var sql = _getRecipientSql(command.UserId);
+            var recipient = _dbConnection.QueryFirst<Recipient>(sql);
+            
+            // Send message.
+            var message = $"The order {command.OrderTitle} returned!";
+            sql = _insertNotificationMessageSql(recipient.UserId, recipient.Email, message, datetime);
+            _dbConnection.Execute(sql);
+            _model.BasicAck(ea.DeliveryTag, false);
+            transactionScope.Complete();
+        };
+        
         // Apply consumers.
         _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyUserCreated), ServiceName.Notifications), false, userCreatedConsumer);
         _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyOrderCreated), ServiceName.Notifications), false, orderCreatedConsumer);
         _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyOrderPaymentSucceded), ServiceName.Notifications), false, orderPaymentSuccededConsumer);
         _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyOrderPaymentDeclined), ServiceName.Notifications), false, orderPaymentDeclinedConsumer);
+        _model.BasicConsume(RabbitMqUtils.GetQueueName(typeof(NotifyOrderReturned), ServiceName.Notifications), false, orderReturnedConsumer);
     }
 
     private void Initialize()
@@ -149,5 +172,6 @@ public class RabbitMqListener : BackgroundService
         RabbitMqUtils.InitializeServiceQueueForMessageType(_model, typeof(NotifyOrderCreated), ServiceName.Notifications);
         RabbitMqUtils.InitializeServiceQueueForMessageType(_model, typeof(NotifyOrderPaymentSucceded), ServiceName.Notifications);
         RabbitMqUtils.InitializeServiceQueueForMessageType(_model, typeof(NotifyOrderPaymentDeclined), ServiceName.Notifications);
+        RabbitMqUtils.InitializeServiceQueueForMessageType(_model, typeof(NotifyOrderReturned), ServiceName.Notifications);
     }
 }

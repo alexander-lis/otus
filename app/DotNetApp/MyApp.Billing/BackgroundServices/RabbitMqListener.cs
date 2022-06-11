@@ -3,6 +3,7 @@ using MyApp.Auth.Contract.Events;
 using MyApp.Billing.Models;
 using MyApp.Common.RabbitMq;
 using MyApp.Notifications.Contract.Commands;
+using MyApp.Notifications.Contract.Events;
 using MyApp.Orders.Contract.Events;
 using MySqlConnector;
 using Newtonsoft.Json;
@@ -75,12 +76,13 @@ public class RabbitMqListener : BackgroundService
                 var sql2 = _updateBillingAccountSql(order.UserId, acc.Money - order.OrderPrice);
                 _dbConnection.Execute(sql2);
                 Console.WriteLine("Billing: OrderCreated event publishes NotifyOrderPaymentSucceded.");
-                RabbitMqService.PublishCommand(_model, new NotifyOrderPaymentSucceded(order.UserId, order.OrderId, order.OrderTitle, order.OrderPrice));
+                RabbitMqService.SendCommand(_model, new NotifyOrderPaymentSucceded(order.UserId, order.OrderId, order.OrderTitle, order.OrderPrice));
             }
             else
             {
                 Console.WriteLine("Billing: OrderCreated event publishes NotifyOrderPaymentDeclined.");
-                RabbitMqService.PublishCommand(_model, new NotifyOrderPaymentDeclined(order.UserId, order.OrderId, order.OrderTitle, order.OrderPrice));
+                RabbitMqService.SendCommand(_model, new NotifyOrderPaymentDeclined(order.UserId, order.OrderId, order.OrderTitle, order.OrderPrice));
+                RabbitMqService.PublishEvent(_model, new OrderPaymentDeclined(order.OrderId));
             }
             
             

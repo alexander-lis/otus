@@ -18,7 +18,7 @@ public class RabbitMqService : IRabbitMqService
         Publish(obj);
     }
 
-    public void PublishCommand(ICommand obj)
+    public void SendCommand(ICommand obj)
     {
         Publish(obj);
     }
@@ -45,7 +45,7 @@ public class RabbitMqService : IRabbitMqService
         Publish(model, obj);
     }
 
-    public static void PublishCommand(IModel model, ICommand obj)
+    public static void SendCommand(IModel model, ICommand obj)
     {
         Publish(model, obj);
     }

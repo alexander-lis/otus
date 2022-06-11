@@ -11,6 +11,7 @@
         <ProjectReference Include="..\MyApp.Common\MyApp.Common.csproj" />
         <ProjectReference Include="..\MyApp.Notifications.Contract\MyApp.Notifications.Contract.csproj" />
         <ProjectReference Include="..\MyApp.Orders.Contract\MyApp.Orders.Contract.csproj" />
+        <ProjectReference Include="..\MyApp.Park.Contract\MyApp.Park.Contract.csproj" />
     </ItemGroup>
     
 </Project>

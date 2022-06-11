@@ -91,6 +91,12 @@ create table if not exists orders_orders
     price int NOT NULL,
     PRIMARY KEY (id));
 
+create table if not exists orders_scooters
+    (id INT NOT NULL AUTO_INCREMENT,    
+    scooterid INT NOT NULL,
+    status INT NOT NULL, -- 1 - available, 2 - busy, 3 - deleted 
+    PRIMARY KEY (id));
+
 create table if not exists orders_idempotency
     (id VARCHAR(36) NOT NULL,
     validto DATETIME NOT NULL,
@@ -98,7 +104,15 @@ create table if not exists orders_idempotency
 ";
 createTableCommand4.ExecuteNonQuery();
 
-//
+// Создание таблиц Park.
+using var createTableCommand5 = connTable.CreateCommand();
+createTableCommand5.CommandText = @"
+create table if not exists park_scooters
+    (id INT NOT NULL AUTO_INCREMENT,    
+    name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id));
+";
+createTableCommand5.ExecuteNonQuery();
 
 Console.WriteLine("CREATING TABLES - FINISH");
 

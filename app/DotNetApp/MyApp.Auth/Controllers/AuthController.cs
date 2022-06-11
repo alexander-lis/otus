@@ -56,7 +56,7 @@ public class AuthController : ControllerBase
             var id = await _connection.ExecuteScalarAsync<int>(_insertUserSql(user), cancellationToken);
         
             _rabbitMqService.PublishEvent(new UserCreated(id, user.Login));
-            _rabbitMqService.PublishCommand(new NotifyUserCreated(id, user.Login));
+            _rabbitMqService.SendCommand(new NotifyUserCreated(id, user.Login));
             
             transactionScope.Complete();
             
