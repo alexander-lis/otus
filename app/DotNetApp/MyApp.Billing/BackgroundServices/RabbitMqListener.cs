@@ -85,7 +85,6 @@ public class RabbitMqListener : BackgroundService
                 RabbitMqService.PublishEvent(_model, new OrderPaymentDeclined(order.OrderId));
             }
             
-            
             model.BasicAck(ea.DeliveryTag, false);
         };
 

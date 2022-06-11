@@ -89,6 +89,7 @@ create table if not exists orders_orders
     userid INT NOT NULL,
     title VARCHAR(100) NOT NULL,
     price int NOT NULL,
+    scooterstatusid int NOT NULL,
     PRIMARY KEY (id));
 
 create table if not exists orders_scooters

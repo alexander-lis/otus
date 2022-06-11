@@ -48,13 +48,15 @@ public class ScootersController : ControllerBase
     {
         return await _metricsCollector.ExecuteWithMetrics("CreateScooter", async () =>
         {
-            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            var id = -1;
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                id = await _connection.ExecuteScalarAsync<int>(_insertScooterSql(scooter), cancellationToken);
 
-            var id = await _connection.ExecuteScalarAsync<int>(_insertScooterSql(scooter), cancellationToken);
+                transactionScope.Complete();
+            }
 
             _rabbitMqService.PublishEvent(new ScooterCreated(id, scooter.Name));
-
-            transactionScope.Complete();
 
             return Ok();
         });
@@ -65,20 +67,20 @@ public class ScootersController : ControllerBase
     {
         return await _metricsCollector.ExecuteWithMetrics("CreateScooter", async () =>
         {
-            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-
-            await _connection.ExecuteScalarAsync<int>(_deleteScooterSql(id), cancellationToken);
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                await _connection.ExecuteScalarAsync<int>(_deleteScooterSql(id), cancellationToken);
+                transactionScope.Complete();
+            }
 
             _rabbitMqService.PublishEvent(new ScooterDeleted(id));
-
-            transactionScope.Complete();
 
             return Ok();
         });
     }
     
     [HttpGet]
-    public async Task<ActionResult<ICollection<Scooter>>> GetScooters(CreateScooterDto scooter, CancellationToken cancellationToken)
+    public async Task<ActionResult<ICollection<Scooter>>> GetScooters(CancellationToken cancellationToken)
     {
         return await _metricsCollector.ExecuteWithMetrics("GetScooters", async () =>
         {

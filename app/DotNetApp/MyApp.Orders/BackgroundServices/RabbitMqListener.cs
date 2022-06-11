@@ -2,6 +2,7 @@ using Dapper;
 using MyApp.Common.RabbitMq;
 using MyApp.Notifications.Contract.Events;
 using MyApp.Orders.Contract.Events;
+using MyApp.Orders.Models;
 using MyApp.Park.Contract.Events;
 using MySqlConnector;
 using RabbitMQ.Client;
@@ -16,13 +17,17 @@ public class RabbitMqListener : BackgroundService
     private readonly IRabbitMqService _rabbitMqService;
     
     // Скрипты.
-    private readonly Func<int, string> _getDeleteOrderSql =
-        (orderId) =>
-            $"DELETE FROM orders_orders WHERE id = {orderId}";
+    private readonly Func<int, string> _getOrderSql =
+        (id) =>
+            $"SELECT * FROM orders_orders WHERE id = '{id}'";
     
     private readonly Func<ScooterCreated, string> _insertScooterStatusSql =
         (scooter) =>
-            $"INSERT INTO orders_scooters (scooter_id, name, status) VALUES ({scooter.Id}, '{scooter.Name}', 1); SELECT LAST_INSERT_ID()";
+            $"INSERT INTO orders_scooters (scooterid, status) VALUES ({scooter.Id}, 1); SELECT LAST_INSERT_ID()";
+    
+    private readonly Func<int, string> _resumeScooterSql =
+        (scooterstatusid) =>
+            $"UPDATE orders_scooters SET status = 1 WHERE id = {scooterstatusid}";
     
     private readonly Func<int, string> _deleteScooterSql =
         (scooterid) =>
@@ -52,10 +57,12 @@ public class RabbitMqListener : BackgroundService
         orderPaymentDeclinedConsumer.Received += (ch, ea) =>
         {
             Console.WriteLine("Orders: OrderPaymentDeclined event received.");
-            var order = RabbitMqUtils.DeserealizeMessage<OrderPaymentDeclined>(ea);
+            var orderDeclined = RabbitMqUtils.DeserealizeMessage<OrderPaymentDeclined>(ea);
 
-            var sql = _getDeleteOrderSql(order.OrderId);
-            _dbConnection.ExecuteAsync(sql);
+            var order = _dbConnection.QueryFirst<Order>(_getOrderSql(orderDeclined.OrderId));
+            
+            var sql = _resumeScooterSql(order.ScooterStatusId);
+            _dbConnection.Execute(sql);
 
             model.BasicAck(ea.DeliveryTag, false);
         };
@@ -68,7 +75,7 @@ public class RabbitMqListener : BackgroundService
             var created = RabbitMqUtils.DeserealizeMessage<ScooterCreated>(ea);
 
             var sql = _insertScooterStatusSql(created);
-            _dbConnection.ExecuteAsync(sql);
+            _dbConnection.Execute(sql);
 
             model.BasicAck(ea.DeliveryTag, false);
         };
@@ -81,7 +88,7 @@ public class RabbitMqListener : BackgroundService
             var deleted = RabbitMqUtils.DeserealizeMessage<ScooterDeleted>(ea);
 
             var sql = _deleteScooterSql(deleted.Id);
-            _dbConnection.ExecuteAsync(sql);
+            _dbConnection.Execute(sql);
 
             model.BasicAck(ea.DeliveryTag, false);
         };

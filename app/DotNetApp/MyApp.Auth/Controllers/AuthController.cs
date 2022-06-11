@@ -51,15 +51,17 @@ public class AuthController : ControllerBase
     {
         return await _metricsCollector.ExecuteWithMetrics("Register", async () =>
         {
-            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            
-            var id = await _connection.ExecuteScalarAsync<int>(_insertUserSql(user), cancellationToken);
+            var id = -1;
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                id = await _connection.ExecuteScalarAsync<int>(_insertUserSql(user), cancellationToken);
         
+                transactionScope.Complete();    
+            }
+            
             _rabbitMqService.PublishEvent(new UserCreated(id, user.Login));
             _rabbitMqService.SendCommand(new NotifyUserCreated(id, user.Login));
-            
-            transactionScope.Complete();
-            
+
             return Ok(id);
         });
     }
