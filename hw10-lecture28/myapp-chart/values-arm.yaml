@@ -2,32 +2,37 @@ config:
   dbname: "otusdb"
 
 auth:
-  image: "lisitsynalex/myapp_auth:hw7-lecture19-arm"
+  image: "lisitsynalex/myapp_auth:hw10-lecture28-arm"
   replicaCount: 1
   ASPNETCORE_APPL_PATH: '/auth'
 
 backend:
-  image: "lisitsynalex/myapp_backend:hw7-lecture19-arm"
+  image: "lisitsynalex/myapp_backend:hw10-lecture28-arm"
   replicaCount: 1
   ASPNETCORE_APPL_PATH: '/back'
 
 billing:
-  image: "lisitsynalex/myapp_billing:hw7-lecture19-arm"
+  image: "lisitsynalex/myapp_billing:hw10-lecture28-arm"
   replicaCount: 1
   ASPNETCORE_APPL_PATH: '/billing'
 
+park:
+  image: "lisitsynalex/myapp_park:hw10-lecture28-arm"
+  replicaCount: 1
+  ASPNETCORE_APPL_PATH: '/park'  
+
 orders:
-  image: "lisitsynalex/myapp_orders:hw7-lecture19-arm"
+  image: "lisitsynalex/myapp_orders:hw10-lecture28-arm"
   replicaCount: 1
   ASPNETCORE_APPL_PATH: '/orders'
 
 notifications:
-  image: "lisitsynalex/myapp_notifications:hw7-lecture19-arm"
+  image: "lisitsynalex/myapp_notifications:hw10-lecture28-arm"
   replicaCount: 1
   ASPNETCORE_APPL_PATH: '/notifications'
 
 migrator:
-  image: "lisitsynalex/myapp_migrator:hw7-lecture19-arm"
+  image: "lisitsynalex/myapp_migrator:hw10-lecture28-arm"
 
 mysql:
   image: "mariadb:10.7.3"

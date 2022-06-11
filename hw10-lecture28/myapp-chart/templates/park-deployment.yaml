@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-park-deployment
+  labels:
+    app: {{ .Release.Name }}-park
+spec:
+  replicas: {{ .Values.park.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-park
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-park
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-park
+          image: {{ .Values.park.image }}
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+            successThreshold: 3
+          env:
+            - name: "ASPNETCORE_APPL_PATH"
+              value: {{ .Values.park.ASPNETCORE_APPL_PATH }}          
+            - name: "DbConnectionString"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: ConnectionString
+            - name: "RmqConnectionString"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secrets
+                  key: RmqConnectionString
+            - name: "DbName"
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-config
+                  key: dbname
+          ports:
+            - containerPort: 80
