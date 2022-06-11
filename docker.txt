@@ -1,35 +1,41 @@
-docker build -f ./MyApp.Auth/Dockerfile.Arm -t lisitsynalex/myapp_auth:hw7-lecture19-arm .
-docker build -f ./MyApp.Auth/Dockerfile.Default -t lisitsynalex/myapp_auth:hw7-lecture19 .
+docker build -f ./MyApp.Auth/Dockerfile.Arm -t lisitsynalex/myapp_auth:hw10-lecture28-arm .
+docker build -f ./MyApp.Auth/Dockerfile.Default -t lisitsynalex/myapp_auth:hw10-lecture28 .
 
-docker push lisitsynalex/myapp_auth:hw7-lecture19-arm
-docker push lisitsynalex/myapp_auth:hw7-lecture19
+docker push lisitsynalex/myapp_auth:hw10-lecture28-arm
+docker push lisitsynalex/myapp_auth:hw10-lecture28
 
-docker build -f ./MyApp.Backend/Dockerfile.Arm -t lisitsynalex/myapp_backend:hw7-lecture19-arm .
-docker build -f ./MyApp.Backend/Dockerfile.Default -t lisitsynalex/myapp_backend:hw7-lecture19 .
+docker build -f ./MyApp.Backend/Dockerfile.Arm -t lisitsynalex/myapp_backend:hw10-lecture28-arm .
+docker build -f ./MyApp.Backend/Dockerfile.Default -t lisitsynalex/myapp_backend:hw10-lecture28 .
 
-docker push lisitsynalex/myapp_backend:hw7-lecture19-arm
-docker push lisitsynalex/myapp_backend:hw7-lecture19
+docker push lisitsynalex/myapp_backend:hw10-lecture28-arm
+docker push lisitsynalex/myapp_backend:hw10-lecture28
 
-docker build -f ./MyApp.Billing/Dockerfile.Arm -t lisitsynalex/myapp_billing:hw7-lecture19-arm .
-docker build -f ./MyApp.Billing/Dockerfile.Default -t lisitsynalex/myapp_billing:hw7-lecture19 .
+docker build -f ./MyApp.Billing/Dockerfile.Arm -t lisitsynalex/myapp_billing:hw10-lecture28-arm .
+docker build -f ./MyApp.Billing/Dockerfile.Default -t lisitsynalex/myapp_billing:hw10-lecture28 .
 
-docker push lisitsynalex/myapp_billing:hw7-lecture19-arm
-docker push lisitsynalex/myapp_billing:hw7-lecture19
+docker push lisitsynalex/myapp_billing:hw10-lecture28-arm
+docker push lisitsynalex/myapp_billing:hw10-lecture28
 
-docker build -f ./MyApp.Notifications/Dockerfile.Arm -t lisitsynalex/myapp_notifications:hw7-lecture19-arm .
-docker build -f ./MyApp.Notifications/Dockerfile.Default -t lisitsynalex/myapp_notifications:hw7-lecture19 .
+docker build -f ./MyApp.Park/Dockerfile.Arm -t lisitsynalex/myapp_park:hw10-lecture28-arm .
+docker build -f ./MyApp.Park/Dockerfile.Default -t lisitsynalex/myapp_park:hw10-lecture28 .
 
-docker push lisitsynalex/myapp_notifications:hw7-lecture19-arm
-docker push lisitsynalex/myapp_notifications:hw7-lecture19
+docker push lisitsynalex/myapp_park:hw10-lecture28-arm
+docker push lisitsynalex/myapp_park:hw10-lecture28
 
-docker build -f ./MyApp.Orders/Dockerfile.Arm -t lisitsynalex/myapp_orders:hw7-lecture19-arm .
-docker build -f ./MyApp.Orders/Dockerfile.Default -t lisitsynalex/myapp_orders:hw7-lecture19 .
+docker build -f ./MyApp.Notifications/Dockerfile.Arm -t lisitsynalex/myapp_notifications:hw10-lecture28-arm .
+docker build -f ./MyApp.Notifications/Dockerfile.Default -t lisitsynalex/myapp_notifications:hw10-lecture28 .
 
-docker push lisitsynalex/myapp_orders:hw7-lecture19-arm
-docker push lisitsynalex/myapp_orders:hw7-lecture19
+docker push lisitsynalex/myapp_notifications:hw10-lecture28-arm
+docker push lisitsynalex/myapp_notifications:hw10-lecture28
 
-docker build -f ./MyApp.DbMigrator/Dockerfile.Arm -t lisitsynalex/myapp_migrator:hw7-lecture19-arm .
-docker build -f ./MyApp.DbMigrator/Dockerfile.Default -t lisitsynalex/myapp_migrator:hw7-lecture19 .
+docker build -f ./MyApp.Orders/Dockerfile.Arm -t lisitsynalex/myapp_orders:hw10-lecture28-arm .
+docker build -f ./MyApp.Orders/Dockerfile.Default -t lisitsynalex/myapp_orders:hw10-lecture28 .
 
-docker push lisitsynalex/myapp_migrator:hw7-lecture19-arm
-docker push lisitsynalex/myapp_migrator:hw7-lecture19
+docker push lisitsynalex/myapp_orders:hw10-lecture28-arm
+docker push lisitsynalex/myapp_orders:hw10-lecture28
+
+docker build -f ./MyApp.DbMigrator/Dockerfile.Arm -t lisitsynalex/myapp_migrator:hw10-lecture28-arm .
+docker build -f ./MyApp.DbMigrator/Dockerfile.Default -t lisitsynalex/myapp_migrator:hw10-lecture28 .
+
+docker push lisitsynalex/myapp_migrator:hw10-lecture28-arm
+docker push lisitsynalex/myapp_migrator:hw10-lecture28
