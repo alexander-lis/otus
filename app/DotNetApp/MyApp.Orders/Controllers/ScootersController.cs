@@ -11,7 +11,7 @@ using MySqlConnector;
 
 namespace MyApp.Orders.Controllers;
 
-[Route("")]
+[Route("scooters")]
 [ApiController]
 [AllowAnonymous]
 public class ScootersController : ControllerBase

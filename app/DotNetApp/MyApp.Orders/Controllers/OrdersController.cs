@@ -11,7 +11,7 @@ using MySqlConnector;
 
 namespace MyApp.Orders.Controllers;
 
-[Route("")]
+[Route("orders")]
 [ApiController]
 [AllowAnonymous]
 public class OrdersController : ControllerBase
@@ -96,6 +96,16 @@ public class OrdersController : ControllerBase
             _rabbitMqService.SendCommand(new NotifyOrderReturned(order.UserId, order.Id, order.Title));
 
             return Ok();
+        });
+    }
+    
+    [HttpGet("{orderId}")]
+    public async Task<ActionResult<ICollection<Order>>> GetOrders(int orderId, CancellationToken cancellationToken)
+    {
+        return await _metricsCollector.ExecuteWithMetrics("GetOrders", async () =>
+        {
+            var scooters = await _connection.QueryAsync<Order>(_getOrderSql(orderId), cancellationToken);
+            return Ok(scooters);
         });
     }
 }   

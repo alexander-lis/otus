@@ -1,0 +1,495 @@
+{
+	"info": {
+		"_postman_id": "c9bb3dcd-a851-4fdf-92ac-6feae0428efb",
+		"name": "otus_hw10",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "244605"
+	},
+	"item": [
+		{
+			"name": "Register USER 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Register user 1 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    pm.collectionVariables.set(\"hw6_userid1\", pm.response.text());",
+							"    console.info(pm.collectionVariables.get(\"hw6_userid1\"))",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var login1 = pm.variables.replaceIn(\"{{$randomFirstName}}\");",
+							"var password1 =  pm.variables.replaceIn(\"{{$randomPassword}}\");",
+							"pm.collectionVariables.set(\"hw6_login1\", login1);",
+							"pm.collectionVariables.set(\"hw6_password1\", password1);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"{{hw6_login1}}\",\n    \"password\": \"{{hw6_password1}}\",\n    \"name\": \"{{hw6_login1}}\",\n    \"email\": \"{{hw6_login1}}@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/auth/Register",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"auth",
+						"Register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create SCOOTER 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create scooter 1 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    pm.collectionVariables.set(\"hw6_scooterid1\", pm.response.text());",
+							"    console.info(pm.collectionVariables.get(\"hw6_scooterid1\"))",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"TEST SCOOTER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/park/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"park",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create SCOOTER 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create scooter 2 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    pm.collectionVariables.set(\"hw6_scooterid2\", pm.response.text());",
+							"    console.info(pm.collectionVariables.get(\"hw6_scooterid2\"))",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"TEST SCOOTER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/park/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"park",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SCOOTER Statuses",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"ScooterStatus 1 and 2 created\", () => {",
+							"    var data = pm.response.json();",
+							"",
+							"    console.info(data)",
+							"",
+							"    for (let i = 0; i < data.length; i++) {",
+							"        if (data[i].scooterId == pm.collectionVariables.get(\"hw6_scooterid1\")) {",
+							"            pm.collectionVariables.set(\"hw6_scooterstatusid1\", data[i].id);",
+							"        }",
+							"",
+							"        if (data[i].scooterId == pm.collectionVariables.get(\"hw6_scooterid2\")) {",
+							"            pm.collectionVariables.set(\"hw6_scooterstatusid2\", data[i].id);",
+							"        }",
+							"    }",
+							"",
+							"    console.info(pm.collectionVariables.get(\"hw6_scooterstatusid1\"))",
+							"    console.info(pm.collectionVariables.get(\"hw6_scooterstatusid2\"))",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/scooters/",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						"scooters",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create ORDER 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create order 1 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    pm.collectionVariables.set(\"hw6_orderid1\", pm.response.text());",
+							"    console.info(pm.collectionVariables.get(\"hw6_orderid1\"))",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{hw6_userid1}},\n    \"scooterStatusId\": {{hw6_scooterstatusid1}},\n    \"title\": \"Good order\",\n    \"price\": 500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/orders",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SCOOTER 1 STATUS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Scooter status 1 is busy\", () => {",
+							"    var data = pm.response.json();",
+							"    pm.expect(data[0].status).to.equal(2);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/scooters/{{hw6_scooterstatusid1}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						"scooters",
+						"{{hw6_scooterstatusid1}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create ORDER 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create order 2 returns 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"    console.info(pm.request.body.raw)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{hw6_userid1}},\n    \"scooterStatusId\": {{hw6_scooterstatusid1}},\n    \"title\": \"Bad order\",\n    \"price\": 800\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/orders",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get SCOOTER 2 STATUS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Scooter status 2 is available\", () => {",
+							"    var data = pm.response.json();",
+							"",
+							"    pm.expect(data[0].status).to.equal(1);",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/orders/scooters/{{hw6_scooterstatusid2}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"orders",
+						"scooters",
+						"{{hw6_scooterstatusid2}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "port",
+			"value": "80"
+		},
+		{
+			"key": "protocol",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "arch.homework",
+			"type": "string"
+		},
+		{
+			"key": "hw6_login1",
+			"value": ""
+		},
+		{
+			"key": "hw6_password1",
+			"value": ""
+		},
+		{
+			"key": "hw6_userid1",
+			"value": ""
+		},
+		{
+			"key": "hw6_scooterid1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hw6_scooterid2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hw6_orderid1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hw6_orderid2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hw6_scooterstatusid1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "hw6_scooterstatusid2",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

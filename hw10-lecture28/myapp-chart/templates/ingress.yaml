@@ -43,3 +43,10 @@ spec:
                 name: {{ .Release.Name }}-orders-service
                 port:
                   number: 8000
+          - path: {{ .Values.park.ASPNETCORE_APPL_PATH }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-park-service
+                port:
+                  number: 8000
