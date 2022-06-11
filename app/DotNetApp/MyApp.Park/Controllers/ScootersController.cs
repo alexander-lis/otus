@@ -44,7 +44,7 @@ public class ScootersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateScooter(CreateScooterDto scooter, CancellationToken cancellationToken)
+    public async Task<ActionResult<int>> CreateScooter(CreateScooterDto scooter, CancellationToken cancellationToken)
     {
         return await _metricsCollector.ExecuteWithMetrics("CreateScooter", async () =>
         {
@@ -58,7 +58,7 @@ public class ScootersController : ControllerBase
 
             _rabbitMqService.PublishEvent(new ScooterCreated(id, scooter.Name));
 
-            return Ok();
+            return Ok(id);
         });
     }
     

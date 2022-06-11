@@ -48,7 +48,7 @@ public class OrdersController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult> CreateOrder(CreateOrderDto order, CancellationToken cancellationToken)
+    public async Task<ActionResult<int>> CreateOrder(CreateOrderDto order, CancellationToken cancellationToken)
     {
         return await _metricsCollector.ExecuteWithMetrics("CreateOrder", async () =>
         {
@@ -71,7 +71,7 @@ public class OrdersController : ControllerBase
             _rabbitMqService.PublishEvent(new OrderCreated(order.UserId, id, order.Title, order.Price));
             _rabbitMqService.SendCommand(new NotifyOrderCreated(order.UserId, id, order.Title, order.Price));
             
-            return Ok();
+            return Ok(id);
         });
     }
 
