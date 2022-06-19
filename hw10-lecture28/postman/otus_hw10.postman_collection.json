@@ -13,8 +13,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Register user 1 returns 200\", () => {",
+							"pm.test(\"Auth service: регистрация пользователя возвращает код 200\", () => {",
 							"    pm.response.to.have.status(200);",
+							"    console.log(\"afwa\")",
 							"    pm.collectionVariables.set(\"hw6_userid1\", pm.response.text());",
 							"    console.info(pm.collectionVariables.get(\"hw6_userid1\"))",
 							"})",
@@ -70,7 +71,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Create scooter 1 returns 200\", () => {",
+							"pm.test(\"Park service: создание самоката 1 возвращает код 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"    pm.collectionVariables.set(\"hw6_scooterid1\", pm.response.text());",
 							"    console.info(pm.collectionVariables.get(\"hw6_scooterid1\"))",
@@ -125,7 +126,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Create scooter 2 returns 200\", () => {",
+							"pm.test(\"Park service: создание самоката 2 возвращает код 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"    pm.collectionVariables.set(\"hw6_scooterid2\", pm.response.text());",
 							"    console.info(pm.collectionVariables.get(\"hw6_scooterid2\"))",
@@ -180,7 +181,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"ScooterStatus 1 and 2 created\", () => {",
+							"pm.test(\"Orders service: созданы записи о статусе самокатов в сервисе заказов\", () => {",
 							"    var data = pm.response.json();",
 							"",
 							"    console.info(data)",
@@ -233,7 +234,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Create order 1 returns 200\", () => {",
+							"pm.test(\"Orders service: Создание заказа 1 с маленькой суммой возвращает код 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"    pm.collectionVariables.set(\"hw6_orderid1\", pm.response.text());",
 							"    console.info(pm.collectionVariables.get(\"hw6_orderid1\"))",
@@ -288,7 +289,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Scooter status 1 is busy\", () => {",
+							"pm.test(\"Orders service: самокат 1 для заказа 1 успешно оплачен в Billing service и его статус занят\", () => {",
 							"    var data = pm.response.json();",
 							"    pm.expect(data[0].status).to.equal(2);",
 							"})",
@@ -321,13 +322,57 @@
 			"response": []
 		},
 		{
+			"name": "Get USER 1 SUCCESS NOTIFICATION",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Notifications service: наличие сообщения об успешной брони\", () => {",
+							"    var data = pm.response.json();",
+							"",
+							"    var filteredData = data.filter(f => {",
+							"        return f.message == 'The order Good order with price 500 successfully payed!'",
+							"    })",
+							"",
+							"    console.info(filteredData.length)",
+							"    pm.expect(filteredData.length).to.equal(1);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/notifications/{{hw6_userid1}}/notifications",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"notifications",
+						"{{hw6_userid1}}",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create ORDER 2",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Create order 2 returns 200\", () => {",
+							"pm.test(\"Orders service: Создание заказа 2 с большой суммой возвращает код 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"    console.info(pm.request.body.raw)",
 							"})",
@@ -380,7 +425,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Scooter status 2 is available\", () => {",
+							"pm.test(\"Orders service: самокат 2 для заказа 2 не оплачен в Billing service и его статус свободен\", () => {",
 							"    var data = pm.response.json();",
 							"",
 							"    pm.expect(data[0].status).to.equal(1);",
@@ -408,6 +453,50 @@
 						"orders",
 						"scooters",
 						"{{hw6_scooterstatusid2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get USER 1 BAD NOTIFICATION",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Notifications service: наличие сообщения о неуспешной брони\", () => {",
+							"    var data = pm.response.json();",
+							"",
+							"    var filteredData = data.filter(f => {",
+							"        return f.message == 'The order Bad order with price 800 declined!'",
+							"    })",
+							"",
+							"    console.info(filteredData.length)",
+							"    pm.expect(filteredData.length).to.equal(1);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{protocol}}://{{url}}:{{port}}/notifications/{{hw6_userid1}}/notifications",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"notifications",
+						"{{hw6_userid1}}",
+						"notifications"
 					]
 				}
 			},
