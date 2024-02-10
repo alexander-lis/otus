@@ -1,0 +1,126 @@
+<mxfile host="Electron" modified="2024-02-04T17:32:58.448Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.4.0 Chrome/112.0.5615.204 Electron/24.5.1 Safari/537.36" etag="Wp_XHxA9BWQvmJn2Nkp3" version="21.4.0" type="device">
+  <diagram name="Page-1" id="Wr1dTsF130uoxMUAfCbD">
+    <mxGraphModel dx="1207" dy="785" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-29" value="Внешние системы" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="480" y="10" width="360" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-2" value="DWH" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=bottom;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="390" y="540" width="170" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-52" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="350.0000000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-3" value="Клиентские приложения" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="120" width="360" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-4" value="API для интеграции" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="480" y="160" width="360" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-5" value="Внутренние сервисы" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="310" width="730" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-56" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-6" target="D1yi2yCLgPPK0C8S_blm-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-6" value="Оператор&lt;br&gt;билетной&lt;br&gt;системы" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="195" y="10" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-57" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-7" target="D1yi2yCLgPPK0C8S_blm-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-7" value="Пассажир" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="10" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-61" value="consume" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-11" target="D1yi2yCLgPPK0C8S_blm-44">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-62" value="consume" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.379;exitY=0.012;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-11" target="D1yi2yCLgPPK0C8S_blm-59">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-11" value="RabbitMQ" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=middle;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="240" y="500" width="470" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-34" value="call" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=open;endFill=0;dashed=1;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-13" target="D1yi2yCLgPPK0C8S_blm-42">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="260" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-13" value="Панель администрирования билетной системы" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="190" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-33" value="call" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;endArrow=open;endFill=0;dashed=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-14" target="D1yi2yCLgPPK0C8S_blm-58">
+          <mxGeometry x="0.0111" relative="1" as="geometry">
+            <mxPoint x="320" y="250" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-14" value="Мобильное приложение / веб-сайт" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="190" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-40" value="call" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-16" target="D1yi2yCLgPPK0C8S_blm-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-51" value="call" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-16" target="D1yi2yCLgPPK0C8S_blm-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-16" value="REST API интеграции с системами перевозчиков" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-23" value="Система частного перевозчика 1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="50" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-37" value="&lt;br&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-24" target="D1yi2yCLgPPK0C8S_blm-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-24" value="Система частного перевозчика 2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="620" y="50" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-26" value="Система частного перевозчика N" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="50" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-48" value="publish" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.941;entryY=-0.04;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-39" target="D1yi2yCLgPPK0C8S_blm-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="684" y="497" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-39" value="Сервис сбора информации о совершенных проходах" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-42" value="Сервис управления нормативно-справочной информацией" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="150" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-44" value="ClickHouse" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="442.5" y="585" width="65" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-53" value="publish" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.743;entryY=-0.04;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-50" target="D1yi2yCLgPPK0C8S_blm-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="590" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-50" value="Сервис сбора информации о движении общественного транспорта" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="360" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-58" value="Сервис продажи билетов" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="360" width="70" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-60" value="push" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="D1yi2yCLgPPK0C8S_blm-59" target="D1yi2yCLgPPK0C8S_blm-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-59" value="Сервис отображения информации о движении общественного транспорта" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="360" width="105" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-63" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="80" y="310" width="20" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="D1yi2yCLgPPK0C8S_blm-64" value="stateless&lt;br&gt;services" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="10" y="380" width="70" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
