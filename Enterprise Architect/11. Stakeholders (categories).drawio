@@ -1,0 +1,46 @@
+<mxfile host="Electron" modified="2024-02-11T17:49:56.881Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.4.0 Chrome/112.0.5615.204 Electron/24.5.1 Safari/537.36" etag="q_FYe-sErWv8nu9GXF4v" version="21.4.0" type="device">
+  <diagram name="Page-1" id="_tRUN_RVdU9OOjxSLjXG">
+    <mxGraphModel dx="1026" dy="667" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-1" value="Городская администрация" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="194" y="80" width="440" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-2" value="Частные перевозчики" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="194" y="310" width="440" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-4" value="Оператор пассажирских&lt;br&gt;перевозок (госкомпания)" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="194" y="170" width="440" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-5" value="Генеральный директор" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="280" y="350" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-6" value="Разработчики" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="440" y="350" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-7" value="Разработчики" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="490" y="210" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-8" value="Отдел IT&lt;br&gt;инфраструктуры" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="440" y="250" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-9" value="Генеральный директор" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="200" y="220" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-10" value="Департамент транспорта" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="430" y="120" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-11" value="Мэрия" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="290" y="110" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-12" value="Сервисный центр" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="320" y="260" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZJ-nb5-xD-0jJNQlTidJ-13" value="Оператор&lt;br&gt;системы" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="340" y="210" width="110" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
