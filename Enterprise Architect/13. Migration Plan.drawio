@@ -1,0 +1,121 @@
+<mxfile host="Electron" modified="2024-02-20T18:38:11.378Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.4.0 Chrome/112.0.5615.204 Electron/24.5.1 Safari/537.36" etag="arRUHJM5daYx3OwWIghQ" version="21.4.0" type="device">
+  <diagram name="Page-1" id="G_VGtyXZB-HG06eAAHSd">
+    <mxGraphModel dx="1207" dy="785" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lwb4PUQF_VmoeUdXh288-37" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="175" y="240" width="270" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-1" target="lwb4PUQF_VmoeUdXh288-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-1" value="As-Is" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#E0FFE0;shape=mxgraph.archimate3.tech;techType=plateau;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-3" value="To-Be" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#E0FFE0;shape=mxgraph.archimate3.tech;techType=plateau;" vertex="1" parent="1">
+          <mxGeometry x="918" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-4" target="lwb4PUQF_VmoeUdXh288-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-4" value="Транзитная&lt;br&gt;архтектура 1" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#E0FFE0;shape=mxgraph.archimate3.tech;techType=plateau;" vertex="1" parent="1">
+          <mxGeometry x="250" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-5" target="lwb4PUQF_VmoeUdXh288-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-5" value="Транзитная&lt;br&gt;архитектура 2" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#E0FFE0;shape=mxgraph.archimate3.tech;techType=plateau;" vertex="1" parent="1">
+          <mxGeometry x="470" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-12" target="lwb4PUQF_VmoeUdXh288-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-12" value="Подготовлены внутренние сервисы и структуры БД для хранения информации о сторонних перевозчиках и НСИ" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="215" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-14" target="lwb4PUQF_VmoeUdXh288-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-14" value="Реализован модуль панели администрирования для управления сторонними перевозчиками" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="445" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-16" target="lwb4PUQF_VmoeUdXh288-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-16" value="Транзитная&lt;br&gt;архитектура 2" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#E0FFE0;shape=mxgraph.archimate3.tech;techType=plateau;" vertex="1" parent="1">
+          <mxGeometry x="695" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-18" target="lwb4PUQF_VmoeUdXh288-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-18" value="Реализовано API для интеграции сторонних перевозчиков" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="681.5" width="147" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-22" target="lwb4PUQF_VmoeUdXh288-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-22" value="Сторонние перевозчики подключены к оператору перевозок и передают информацию о пассажиропотоке" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="904.5" width="147" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-24" value="Проект интеграции&lt;br&gt;сторонних перевозчиков" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#FFE0E0;shape=mxgraph.archimate3.application;archiType=rounded;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="20" y="420" width="1040" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-25" value="API для интеграции перевозчиков" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#99ffff;shape=mxgraph.archimate3.application;appType=comp;archiType=square;" vertex="1" parent="1">
+          <mxGeometry x="680" y="268.75" width="150" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=diamondThin;endFill=0;endSize=20;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-26" target="lwb4PUQF_VmoeUdXh288-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-26" value="Модуль панели администрирования" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#99ffff;shape=mxgraph.archimate3.application;appType=comp;archiType=square;" vertex="1" parent="1">
+          <mxGeometry x="455" y="268.75" width="150" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=diamondThin;endFill=0;endSize=20;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-25" target="lwb4PUQF_VmoeUdXh288-16">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="551.5" y="240" as="sourcePoint" />
+            <mxPoint x="551.5" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-30" value="Нормативно-справочная информация" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#99ffff;shape=mxgraph.archimate3.businessObject;overflow=fill;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="325" y="253.75" width="105" height="52.5" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-33" value="Сервисы обработки данных сторонних перевозчиков" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#99ffff;shape=mxgraph.archimate3.application;appType=serv;archiType=rounded" vertex="1" parent="1">
+          <mxGeometry x="190" y="273.75" width="120" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-34" value="&lt;br&gt;Структуры базы данных" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#99ffff;shape=mxgraph.archimate3.businessObject;overflow=fill" vertex="1" parent="1">
+          <mxGeometry x="325" y="323.75" width="105" height="52.5" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;endArrow=diamondThin;endFill=0;endSize=20;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-37">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="540" y="240" as="sourcePoint" />
+            <mxPoint x="310" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=block;endFill=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-39" target="lwb4PUQF_VmoeUdXh288-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-39" value="Подготовка данных" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#FFE0E0;shape=mxgraph.archimate3.application;archiType=rounded;" vertex="1" parent="1">
+          <mxGeometry x="265" y="435" width="90" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=block;endFill=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-40" target="lwb4PUQF_VmoeUdXh288-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-40" value="Реализация модулей для панели администрировния" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#FFE0E0;shape=mxgraph.archimate3.application;archiType=rounded;" vertex="1" parent="1">
+          <mxGeometry x="467.5" y="425" width="125" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=block;endFill=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-43" target="lwb4PUQF_VmoeUdXh288-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-43" value="Реализация API для интеграции перевозчиков" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#FFE0E0;shape=mxgraph.archimate3.application;archiType=rounded;" vertex="1" parent="1">
+          <mxGeometry x="692.5" y="425" width="125" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=block;endFill=0;" edge="1" parent="1" source="lwb4PUQF_VmoeUdXh288-45" target="lwb4PUQF_VmoeUdXh288-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lwb4PUQF_VmoeUdXh288-45" value="Подключение сторонних перевозчиков к основной системе" style="html=1;outlineConnect=0;whiteSpace=wrap;fillColor=#FFE0E0;shape=mxgraph.archimate3.application;archiType=rounded;" vertex="1" parent="1">
+          <mxGeometry x="915.5" y="425" width="125" height="65" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
